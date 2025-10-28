@@ -2,7 +2,6 @@ package org.example.microservicemusic.model.entity;
 
 import jakarta.persistence.*;
 import org.example.microservicemusic.model.enumeration.Genre;
-import org.example.microservicemusic.model.enumeration.Reaction;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

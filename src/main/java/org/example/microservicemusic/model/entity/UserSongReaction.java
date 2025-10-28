@@ -9,11 +9,12 @@ public class UserSongReaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_song_reaction_id")
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private AppUser user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "song_id")
@@ -35,11 +36,11 @@ public class UserSongReaction {
         this.id = id;
     }
 
-    public AppUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(AppUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

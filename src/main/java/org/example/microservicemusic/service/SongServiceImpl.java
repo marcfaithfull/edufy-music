@@ -2,7 +2,7 @@ package org.example.microservicemusic.service;
 
 import org.example.microservicemusic.exception.RequestNotValidException;
 import org.example.microservicemusic.model.dto.SongDto;
-import org.example.microservicemusic.model.entity.AppUser;
+import org.example.microservicemusic.model.entity.User;
 import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.exception.ResourceNotFoundException;
@@ -14,8 +14,6 @@ import org.example.microservicemusic.repository.SongRepository;
 import org.example.microservicemusic.repository.UserRepository;
 import org.example.microservicemusic.repository.UserSongReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -113,10 +111,11 @@ public class SongServiceImpl implements SongService {
     public void likeSong(Long id, Principal principal) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        AppUser appUser = userRepository.findByUsername(principal.getName());
-        Optional<AppUser> userId = userRepository.findById(appUser.getId());
+        User principalUser = userRepository.findByUsername(principal.getName());
+        User databaseUser = userRepository.findById(principalUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         UserSongReaction userSongReaction = new UserSongReaction();
-        userSongReaction.setUser(userId.get());
+        userSongReaction.setUser(databaseUser);
         userSongReaction.setSong(song);
         userSongReaction.setReaction(Reaction.LIKE);
         userSongReactionRepository.save(userSongReaction);
@@ -126,8 +125,14 @@ public class SongServiceImpl implements SongService {
     public void dislikeSong(Long id, Principal principal) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        //song.setReaction(Reaction.DISLIKE);
-        songRepository.save(song);
+        User principalUser = userRepository.findByUsername(principal.getName());
+        User databaseUser = userRepository.findById(principalUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        UserSongReaction userSongReaction = new UserSongReaction();
+        userSongReaction.setUser(databaseUser);
+        userSongReaction.setSong(song);
+        userSongReaction.setReaction(Reaction.DISLIKE);
+        userSongReactionRepository.save(userSongReaction);
     }
 
     @Override
@@ -135,10 +140,19 @@ public class SongServiceImpl implements SongService {
         List<Song> songs = songRepository.findAll();
         Random randomSong = new Random();
         Song song = songs.get(randomSong.nextInt(songs.size()));
+
+        List<User> users = userRepository.findAll();
+        Random randomUser = new Random();
+        User user = users.get(randomUser.nextInt(users.size()));
+
         Random randomReaction = new Random();
         Reaction[] reactions = Reaction.values();
-        //song.setReaction(reactions[randomReaction.nextInt(reactions.length)]);
-        songRepository.save(song);
+
+        UserSongReaction userSongReaction = new UserSongReaction();
+        userSongReaction.setSong(song);
+        userSongReaction.setUser(user);
+        userSongReaction.setReaction(reactions[randomReaction.nextInt(reactions.length)]);
+        userSongReactionRepository.save(userSongReaction);
     }
 
     @Override

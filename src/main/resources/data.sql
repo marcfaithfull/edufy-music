@@ -28,6 +28,12 @@ VALUES
     (2,5),
     (2,6);
 
+INSERT INTO app_user (user_id, username)
+VALUES
+    (1,'Kurt'),
+    (2,'Dave');
+
 ALTER TABLE artist ALTER COLUMN artist_id RESTART WITH 100;
 ALTER TABLE song ALTER COLUMN song_id RESTART WITH 100;
 ALTER TABLE album ALTER COLUMN album_id RESTART WITH 100;
+ALTER TABLE app_user ALTER COLUMN user_id RESTART WITH 100;
