@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.example.microservicemusic.model.enumeration.Genre;
 import org.example.microservicemusic.model.enumeration.Reaction;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,24 +22,30 @@ public class Song {
     private String title;
 
     @Column(name = "song_length")
-    private Double length;
+    private BigDecimal length;
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
+
+    @OneToMany(mappedBy = "song")
+    private List<UserSongReaction> reactions;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "song_genre")
+    private Genre genre;
 
     @ManyToMany(mappedBy = "songs")
     private Set<Album> albums = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name ="artist_id")
-    private Artist artist;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "song_reaction")
-    private Reaction reaction;
-
-    @Column(name = "song_genre")
-    private Genre genre;
-
     public Song() {
-        this.reaction = Reaction.NEUTRAL;
+    }
+
+    public Song(String title, BigDecimal length, Artist artist, Genre genre) {
+        this.title = title;
+        this.length = length;
+        this.artist = artist;
+        this.genre = genre;
     }
 
     public Long getId() {
@@ -56,11 +64,11 @@ public class Song {
         this.title = title;
     }
 
-    public double getLength() {
+    public BigDecimal getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(BigDecimal length) {
         this.length = length;
     }
 
@@ -80,11 +88,11 @@ public class Song {
         this.artist = artist;
     }
 
-    public Reaction getReaction() {
-        return reaction;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setReaction(Reaction reaction) {
-        this.reaction = reaction;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 }

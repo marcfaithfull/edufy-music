@@ -1,6 +1,8 @@
 package org.example.microservicemusic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.example.microservicemusic.model.enumeration.Genre;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,21 +11,23 @@ import java.util.Set;
 @Table(name = "artist")
 public class Artist {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "artist_id")
     private Long id;
 
     @Column(name = "artist_name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "artist_genre")
-    private String genre;
+    private Genre genre;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "artist")
-    private Set<Album> albums = new HashSet<Album>();
+    private Set<Album> albums = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "artist")
     private Set<Song> songs = new HashSet<>();
 
@@ -43,11 +47,11 @@ public class Artist {
         this.name = name;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 

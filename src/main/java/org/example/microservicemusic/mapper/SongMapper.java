@@ -15,7 +15,6 @@ public class SongMapper {
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
         dto.setLength(song.getLength());
-        dto.setReaction(song.getReaction());
         return dto;
     }
 

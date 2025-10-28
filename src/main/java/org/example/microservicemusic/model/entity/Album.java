@@ -1,5 +1,6 @@
 package org.example.microservicemusic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -25,9 +26,7 @@ public class Album {
     @Column(name = "tracks")
     private int tracks;
 
-    @Column(name = "is_explicit")
-    private boolean isExplicit;
-
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "album_song",
@@ -36,10 +35,10 @@ public class Album {
     )
     private Set<Song> songs;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
-
 
     public Long getId() {
         return id;
@@ -79,14 +78,6 @@ public class Album {
 
     public void setTracks(int tracks) {
         this.tracks = tracks;
-    }
-
-    public boolean isExplicit() {
-        return isExplicit;
-    }
-
-    public void setExplicit(boolean explicit) {
-        isExplicit = explicit;
     }
 
     public Set<Song> getSongs() {

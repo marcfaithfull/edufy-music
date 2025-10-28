@@ -7,5 +7,6 @@ public enum Genre {
     COUNTRY,
     PSYCHEDELIC,
     CLASSICAL,
-    PUNK
+    PUNK,
+    REGGAE
 }

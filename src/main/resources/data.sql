@@ -1,14 +1,33 @@
-INSERT INTO song (song_title, song_length)
+INSERT INTO artist (artist_id, artist_name, artist_genre)
 VALUES
-    ('Red Eye Jedi', 4.20),
-    ('Satan''s Claws', 6.66);
+    (1,'Green Growers','REGGAE'),
+    (2,'Face Eater', 'METAL');
 
-INSERT INTO album (album_title)
+INSERT INTO song (song_id, song_title, song_length, artist_id, song_genre)
 VALUES
-    ('Album 1'),
-    ('Album 2');
+    (1,'Red Eye Jedi',4.20,1,'REGGAE'),
+    (2, 'How High?',4.20,1,'REGGAE'),
+    (3,'Miss. Mary Jane',4.20,1,'REGGAE'),
 
-INSERT INTO artist (artist_name)
+    (4,'Satan''s Claws',7.06,2,'METAL'),
+    (5,'Forbidden Fruit',7.06,2,'METAL'),
+    (6,'The Beast System',7.06,2,'METAL');
+
+INSERT INTO album (album_id, album_title, album_length, album_year, tracks, artist_id)
 VALUES
-    ('Album 1'),
-    ('Album 2');
+    (1,'Praise Jah',13,2000,3,1),
+    (2,'The Devil''s Greatest Trick',21.18,2005,3,2);
+
+INSERT INTO album_song (album_id, song_id)
+VALUES
+    (1,1),
+    (1,2),
+    (1,3),
+
+    (2,4),
+    (2,5),
+    (2,6);
+
+ALTER TABLE artist ALTER COLUMN artist_id RESTART WITH 100;
+ALTER TABLE song ALTER COLUMN song_id RESTART WITH 100;
+ALTER TABLE album ALTER COLUMN album_id RESTART WITH 100;

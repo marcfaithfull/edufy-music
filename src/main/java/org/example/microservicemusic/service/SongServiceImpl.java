@@ -1,36 +1,71 @@
 package org.example.microservicemusic.service;
 
-import org.example.microservicemusic.mapper.ResponseMapper;
+import org.example.microservicemusic.exception.RequestNotValidException;
 import org.example.microservicemusic.model.dto.SongDto;
+import org.example.microservicemusic.model.entity.AppUser;
+import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.exception.ResourceNotFoundException;
 import org.example.microservicemusic.mapper.SongMapper;
+import org.example.microservicemusic.model.entity.UserSongReaction;
 import org.example.microservicemusic.model.enumeration.Reaction;
+import org.example.microservicemusic.repository.ArtistRepository;
 import org.example.microservicemusic.repository.SongRepository;
+import org.example.microservicemusic.repository.UserRepository;
+import org.example.microservicemusic.repository.UserSongReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class SongServiceImpl implements SongService {
     SongRepository songRepository;
     SongMapper songMapper;
+    ArtistRepository artistRepository;
+    UserRepository userRepository;
+    UserSongReactionRepository userSongReactionRepository;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper) {
+    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, ArtistRepository artistRepository,
+                           UserRepository userRepository, UserSongReactionRepository userSongReactionRepository) {
         this.songRepository = songRepository;
         this.songMapper = songMapper;
+        this.artistRepository = artistRepository;
+        this.userRepository = userRepository;
+        this.userSongReactionRepository = userSongReactionRepository;
     }
 
     // CRUD
 
     public Long createSong(SongDto songDto) {
-        Song song = new Song();
-        song.setTitle(songDto.getTitle());
-        song.setLength(songDto.getLength());
+        if (songDto.getTitle() == null || songDto.getTitle().isBlank()) {
+            throw new RequestNotValidException("title is required");
+        }
+        if (songDto.getLength() == null) {
+            throw new RequestNotValidException("length is required");
+        }
+        if (songDto.getArtistId() == null || songDto.getArtistId() == 0) {
+            throw new RequestNotValidException("artistId is required");
+        }
+        if (songDto.getGenre() == null) {
+            throw new RequestNotValidException("genre is required");
+        }
+        Artist artist = artistRepository.findById(songDto.getArtistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + songDto.getArtistId() + " not found"));
+
+        Song song = new Song(
+                songDto.getTitle(),
+                songDto.getLength(),
+                artist,
+                songDto.getGenre());
+
         songRepository.save(song);
         return song.getId();
     }
@@ -44,8 +79,20 @@ public class SongServiceImpl implements SongService {
     public void updateSong(Long id, SongDto songDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        song.setTitle(songDto.getTitle());
-        song.setLength(songDto.getLength());
+        if (!(songDto.getArtistId() == null || songDto.getArtistId() == 0)) {
+            Artist artist = artistRepository.findById(songDto.getArtistId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
+            song.setArtist(artist);
+        }
+        if (!(song.getTitle() == null)) {
+            song.setTitle(songDto.getTitle());
+        }
+        if (!(song.getLength() == null)) {
+            song.setLength(songDto.getLength());
+        }
+        if (songDto.getGenre() != null) {
+            song.setGenre(songDto.getGenre());
+        }
         songRepository.save(song);
     }
 
@@ -59,23 +106,27 @@ public class SongServiceImpl implements SongService {
 
     public List<SongDto> getAllSongs() {
         List<Song> songs = songRepository.findAll();
-        System.out.println(songs);
         return songMapper.listToDto(songs);
     }
 
     @Override
-    public void likeSong(Long id) {
+    public void likeSong(Long id, Principal principal) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        song.setReaction(Reaction.LIKE);
-        songRepository.save(song);
+        AppUser appUser = userRepository.findByUsername(principal.getName());
+        Optional<AppUser> userId = userRepository.findById(appUser.getId());
+        UserSongReaction userSongReaction = new UserSongReaction();
+        userSongReaction.setUser(userId.get());
+        userSongReaction.setSong(song);
+        userSongReaction.setReaction(Reaction.LIKE);
+        userSongReactionRepository.save(userSongReaction);
     }
 
     @Override
-    public void dislikeSong(Long id) {
+    public void dislikeSong(Long id, Principal principal) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        song.setReaction(Reaction.DISLIKE);
+        //song.setReaction(Reaction.DISLIKE);
         songRepository.save(song);
     }
 
@@ -86,7 +137,7 @@ public class SongServiceImpl implements SongService {
         Song song = songs.get(randomSong.nextInt(songs.size()));
         Random randomReaction = new Random();
         Reaction[] reactions = Reaction.values();
-        song.setReaction(reactions[randomReaction.nextInt(reactions.length)]);
+        //song.setReaction(reactions[randomReaction.nextInt(reactions.length)]);
         songRepository.save(song);
     }
 
