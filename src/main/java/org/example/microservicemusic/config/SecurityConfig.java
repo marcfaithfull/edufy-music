@@ -23,6 +23,12 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("Courtney")
+                .password("Love")
+                .roles("ADMIN")
+                .build();
+
         UserDetails user1 = User.withDefaultPasswordEncoder()
                 .username("Kurt")
                 .password("Cobain")
@@ -37,6 +43,7 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(
                 Arrays.asList(
+                        admin,
                         user1,
                         user2
                 ));

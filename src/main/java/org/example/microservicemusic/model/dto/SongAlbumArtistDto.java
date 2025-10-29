@@ -1,51 +1,20 @@
-package org.example.microservicemusic.model.entity;
+package org.example.microservicemusic.model.dto;
 
-import jakarta.persistence.*;
+import org.example.microservicemusic.model.entity.Album;
+import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.enumeration.Genre;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "song")
-public class Song {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "song_id")
+public class SongAlbumArtistDto {
     private Long id;
-
-    @Column(name = "song_title")
     private String title;
-
-    @Column(name = "song_length")
     private BigDecimal length;
-
-    @ManyToOne
-    @JoinColumn(name = "artist_id")
-    private Artist artist;
-
-    /*@OneToMany(mappedBy = "song")
-    private List<UserSongReaction> reactions;*/
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "song_genre")
     private Genre genre;
-
-    @ManyToMany(mappedBy = "songs")
-    private Set<Album> albums = new HashSet<>();
-
-    public Song() {
-    }
-
-    public Song(String title, BigDecimal length, Artist artist, Genre genre) {
-        this.title = title;
-        this.length = length;
-        this.artist = artist;
-        this.genre = genre;
-    }
+    private Set<Album> albums;
+    //private Long artistId;
+    private Artist artist;
 
     public Long getId() {
         return id;
@@ -78,6 +47,14 @@ public class Song {
     public void setAlbums(Set<Album> albums) {
         this.albums = albums;
     }
+
+    /*public Long getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(Long artistId) {
+        this.artistId = artistId;
+    }*/
 
     public Artist getArtist() {
         return artist;

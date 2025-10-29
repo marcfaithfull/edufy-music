@@ -1,7 +1,9 @@
 package org.example.microservicemusic.controller;
 
-import org.example.microservicemusic.model.dto.SongDto;
+import org.example.microservicemusic.model.dto.SaveSongDto;
+import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
 import org.example.microservicemusic.mapper.ResponseMapper;
+import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,10 @@ public class SongController {
 
     // CRUD
 
-    @Secured("ROLE_USER")
+    @Secured("ROLE_ADMIN")
     @PostMapping("/create/song")
-    public ResponseEntity<Map<String, Object>> createSong(@RequestBody SongDto songDto) {
-        Long id = songService.createSong(songDto);
+    public ResponseEntity<Map<String, Object>> createSong(@RequestBody SaveSongDto saveSongDto) {
+        Long id = songService.createSong(saveSongDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
                 "Song with id " + id + " has been created"
@@ -36,22 +37,26 @@ public class SongController {
     }
 
     @Secured("ROLE_USER")
-    @GetMapping("/read/song/{id}")
-    public ResponseEntity<SongDto> getSongById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(songService.getSongById(id));
+    @GetMapping("/play/song/{id}")
+    public ResponseEntity<Map<String, Object>> getSongById(@PathVariable Long id) {
+        SongAlbumArtistDto songAlbumArtistDto = songService.getSongById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
+                200,
+                songAlbumArtistDto.getTitle() + " by " + songAlbumArtistDto.getArtist().getName() + " is currently playing"
+        ));
     }
 
-    @Secured("ROLE_USER")
+    @Secured("ROLE_ADMIN")
     @PutMapping("/update/song/{id}")
-    public ResponseEntity<Map<String, Object>> updateSong(@PathVariable Long id, @RequestBody SongDto songDto) {
-        songService.updateSong(id, songDto);
+    public ResponseEntity<Map<String, Object>> updateSongById(@PathVariable Long id, @RequestBody SaveSongDto saveSongDto) {
+        songService.updateSong(id, saveSongDto);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
                 "Song with id " + id + " has been updated"
         ));
     }
 
-    @Secured("ROLE_USER")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/delete/song/{id}")
     public ResponseEntity<Map<String, Object>> deleteSongById(@PathVariable Long id) {
         songService.deleteSongById(id);
@@ -69,7 +74,7 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.OK).body(songService.getAllSongs());
     }
 
-    @Secured("ROLE_USER")
+    /*@Secured("ROLE_USER")
     @PutMapping("/like/song/{id}")
     public ResponseEntity<Map<String, Object>> likeSong(@PathVariable Long id, Principal principal) {
         songService.likeSong(id, principal);
@@ -87,22 +92,32 @@ public class SongController {
                 200,
                 "You disliked song with id " + id
         ));
-    }
+    }*/
 
     @Secured("ROLE_USER")
-    @PutMapping("/randomise/song")
-    public ResponseEntity<Map<String, Object>> randomiseSong() {
+    @GetMapping("/randomise/song")
+    public ResponseEntity<Map<String, Object>> getRandomSong() {
+        SongAlbumArtistDto randomSong = songService.getRandomSong();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
+                200,
+                randomSong.getTitle() + " by " + randomSong.getArtist().getName() + " is currently playing"
+        ));
+    }
+
+    /*@Secured("ROLE_USER")
+    @PutMapping("/randomise/song/stats")
+    public ResponseEntity<Map<String, Object>> randomiseSongStats() {
         songService.randomiseSongStats();
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
                 "You randomised the song stats"
         ));
-    }
+    }*/
 
     @Secured("ROLE_USER")
     @PostMapping("/search/song")
-    public ResponseEntity<List<SongDto>> searchSong(@RequestBody SongDto search) {
-        List<SongDto> searchResults = songService.searchResults(search);
+    public ResponseEntity<List<SongAlbumArtistDto>> searchSong(@RequestBody SongAlbumArtistDto search) {
+        List<SongAlbumArtistDto> searchResults = songService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);
     }
 }

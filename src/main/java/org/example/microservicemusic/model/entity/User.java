@@ -16,8 +16,8 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserSongReaction> reactions;
+    /*@OneToMany(mappedBy = "user")
+    private List<UserSongReaction> reactions;*/
 
     public Long getId() {
         return id;
@@ -35,11 +35,11 @@ public class User {
         this.username = firstName;
     }
 
-    public List<UserSongReaction> getReactions() {
+    /*public List<UserSongReaction> getReactions() {
         return reactions;
     }
 
     public void setReactions(List<UserSongReaction> reactions) {
         this.reactions = reactions;
-    }
+    }*/
 }

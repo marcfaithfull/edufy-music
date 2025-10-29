@@ -1,3 +1,4 @@
+/*
 package org.example.microservicemusic.model.entity;
 
 import jakarta.persistence.*;
@@ -60,3 +61,4 @@ public class UserSongReaction {
         this.reaction = reaction;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package org.example.microservicemusic.repository;
 
 import org.example.microservicemusic.model.entity.Song;
@@ -13,3 +14,4 @@ public interface UserSongReactionRepository extends JpaRepository<UserSongReacti
     List<UserSongReaction> findByUser(User user);
     List<UserSongReaction> findBySong(Song song);
 }
+*/
