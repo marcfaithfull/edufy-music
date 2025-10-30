@@ -24,11 +24,11 @@ public class Artist {
     private Genre genre;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.REMOVE)
     private Set<Album> albums = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.REMOVE)
     private Set<Song> songs = new HashSet<>();
 
     public Long getId() {

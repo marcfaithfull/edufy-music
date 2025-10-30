@@ -26,14 +26,14 @@ public class ArtistServiceImpl implements ArtistService {
     // CRUD
 
     @Override
-    public Long createArtist(ArtistDto artistDto) {
+    public Artist createArtist(ArtistDto artistDto) {
         if (artistDto.getName() == null || artistDto.getName().isBlank()) {
             throw new RequestNotValidException("\"title\" is required");
         }
         Artist artist = new Artist();
         artist.setName(artistDto.getName());
         artistRepository.save(artist);
-        return artist.getId();
+        return artist;
     }
 
     @Override
@@ -52,10 +52,11 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void deleteArtistById(Long id) {
-        artistRepository.findById(id)
+    public Artist deleteArtistById(Long id) {
+        Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
         artistRepository.deleteById(id);
+        return artist;
     }
 
     // OTHER ENDPOINTS

@@ -1,9 +1,8 @@
 package org.example.microservicemusic.controller;
 
-import org.example.microservicemusic.model.dto.UploadSongDto;
+import org.example.microservicemusic.model.dto.PostSongDto;
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
 import org.example.microservicemusic.mapper.ResponseMapper;
-import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/edufy/music")
 public class SongController {
     private final SongService songService;
 
@@ -29,11 +27,11 @@ public class SongController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/upload/song")
-    public ResponseEntity<Map<String, Object>> createSong(@RequestBody UploadSongDto uploadSongDto) {
-        Long id = songService.createSong(uploadSongDto);
+    public ResponseEntity<Map<String, Object>> createSong(@RequestBody PostSongDto postSongDto) {
+        Song song = songService.createSong(postSongDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
-                "Song with id " + id + " has been uploaded",
+                song.getTitle() + " has been uploaded",
                 "/upload/song/"
         ));
     }
@@ -51,8 +49,8 @@ public class SongController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/update/song/{id}")
-    public ResponseEntity<Map<String, Object>> updateSongById(@PathVariable Long id, @RequestBody UploadSongDto uploadSongDto) {
-        songService.updateSong(id, uploadSongDto);
+    public ResponseEntity<Map<String, Object>> updateSongById(@PathVariable Long id, @RequestBody PostSongDto postSongDto) {
+        songService.updateSong(id, postSongDto);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
                 "Song with id " + id + " has been updated",

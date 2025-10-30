@@ -14,7 +14,6 @@ public class SongAlbumArtistDto {
     private BigDecimal length;
     private Genre genre;
     private Set<Album> albums;
-    //private Long artistId;
     private Artist artist;
 
     public String getUrl() {
@@ -56,14 +55,6 @@ public class SongAlbumArtistDto {
     public void setAlbums(Set<Album> albums) {
         this.albums = albums;
     }
-
-    /*public Long getArtistId() {
-        return artistId;
-    }
-
-    public void setArtistId(Long artistId) {
-        this.artistId = artistId;
-    }*/
 
     public Artist getArtist() {
         return artist;

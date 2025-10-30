@@ -1,19 +1,18 @@
 package org.example.microservicemusic.service;
 
-import org.example.microservicemusic.model.dto.UploadSongDto;
+import org.example.microservicemusic.model.dto.PostSongDto;
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
-import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.model.entity.Song;
 
 import java.util.List;
 
 public interface SongService {
 
-    Long createSong(UploadSongDto uploadSongDto);
+    Song createSong(PostSongDto postSongDto);
 
     SongAlbumArtistDto getSongById(Long id);
 
-    void updateSong(Long id, UploadSongDto uploadSongDto);
+    void updateSong(Long id, PostSongDto postSongDto);
 
     Song deleteSongById(Long id);
 

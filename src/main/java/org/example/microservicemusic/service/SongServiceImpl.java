@@ -3,9 +3,8 @@ package org.example.microservicemusic.service;
 import jakarta.transaction.Transactional;
 import org.example.microservicemusic.exception.RequestNotValidException;
 import org.example.microservicemusic.mapper.SongAlbumArtistMapper;
-import org.example.microservicemusic.model.dto.UploadSongDto;
+import org.example.microservicemusic.model.dto.PostSongDto;
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
-import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.model.entity.Album;
 import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.entity.Song;
@@ -46,35 +45,35 @@ public class SongServiceImpl implements SongService {
     // CRUD
 
     @Transactional
-    public Long createSong(UploadSongDto uploadSongDto) {
-        if (uploadSongDto.getTitle() == null || uploadSongDto.getTitle().isBlank()) {
+    public Song createSong(PostSongDto postSongDto) {
+        if (postSongDto.getTitle() == null || postSongDto.getTitle().isBlank()) {
             throw new RequestNotValidException("title is required");
         }
-        if (uploadSongDto.getLength() == null) {
+        if (postSongDto.getLength() == null) {
             throw new RequestNotValidException("length is required");
         }
-        if (uploadSongDto.getArtistId() == null || uploadSongDto.getArtistId() == 0) {
+        if (postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0) {
             throw new RequestNotValidException("artistId is required");
         }
-        if (uploadSongDto.getGenre() == null) {
+        if (postSongDto.getGenre() == null) {
             throw new RequestNotValidException("genre is required");
         }
-        Artist artist = artistRepository.findById(uploadSongDto.getArtistId())
-                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + uploadSongDto.getArtistId() + " not found"));
+        Artist artist = artistRepository.findById(postSongDto.getArtistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + postSongDto.getArtistId() + " not found"));
 
         Set<Album> albums = new HashSet<>();
-        Long albumId = uploadSongDto.getAlbumId();
+        Long albumId = postSongDto.getAlbumId();
         if(albumId != null && !albumId.equals(0L)) {
-            Album album = albumRepository.findById(uploadSongDto.getAlbumId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + uploadSongDto.getAlbumId() + " not found"));
+            Album album = albumRepository.findById(postSongDto.getAlbumId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
             albums.add(album);
         }
 
         Song song = new Song(
-                uploadSongDto.getTitle(),
-                uploadSongDto.getLength(),
+                postSongDto.getTitle(),
+                postSongDto.getLength(),
                 artist,
-                uploadSongDto.getGenre());
+                postSongDto.getGenre());
 
         for (Album album : albums) {
             song.getAlbums().add(album);
@@ -82,7 +81,7 @@ public class SongServiceImpl implements SongService {
         }
 
         songRepository.save(song);
-        return song.getId();
+        return song;
     }
 
     public SongAlbumArtistDto getSongById(Long id) {
@@ -91,20 +90,20 @@ public class SongServiceImpl implements SongService {
         return songAlbumArtistMapper.toDto(song);
     }
 
-    public void updateSong(Long id, UploadSongDto uploadSongDto) {
+    public void updateSong(Long id, PostSongDto postSongDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        if (!(uploadSongDto.getArtistId() == null || uploadSongDto.getArtistId() == 0)) {
-            Artist artist = artistRepository.findById(uploadSongDto.getArtistId())
+        if (!(postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0)) {
+            Artist artist = artistRepository.findById(postSongDto.getArtistId())
                     .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
             song.setArtist(artist);
         }
 
         Set<Album> albums = new HashSet<>();
-        Long albumId = uploadSongDto.getAlbumId();
+        Long albumId = postSongDto.getAlbumId();
         if(albumId != null && !albumId.equals(0L)) {
-            Album album = albumRepository.findById(uploadSongDto.getAlbumId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + uploadSongDto.getAlbumId() + " not found"));
+            Album album = albumRepository.findById(postSongDto.getAlbumId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
             albums.add(album);
         }
 
@@ -114,13 +113,13 @@ public class SongServiceImpl implements SongService {
         }
 
         if (!(song.getTitle() == null)) {
-            song.setTitle(uploadSongDto.getTitle());
+            song.setTitle(postSongDto.getTitle());
         }
         if (!(song.getLength() == null)) {
-            song.setLength(uploadSongDto.getLength());
+            song.setLength(postSongDto.getLength());
         }
-        if (uploadSongDto.getGenre() != null) {
-            song.setGenre(uploadSongDto.getGenre());
+        if (postSongDto.getGenre() != null) {
+            song.setGenre(postSongDto.getGenre());
         }
         songRepository.save(song);
     }

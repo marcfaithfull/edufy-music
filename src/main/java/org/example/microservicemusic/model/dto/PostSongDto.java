@@ -4,7 +4,7 @@ import org.example.microservicemusic.model.enumeration.Genre;
 
 import java.math.BigDecimal;
 
-public class UploadSongDto {
+public class PostSongDto {
     private Long id;
     private String title;
     private BigDecimal length;

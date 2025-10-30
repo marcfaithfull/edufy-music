@@ -12,6 +12,7 @@ public class ArtistMapper {
 
     public ArtistDto toDto(Artist artist) {
         ArtistDto dto = new ArtistDto();
+        dto.setUrl("https://stream.edufy.com/artist/" + artist.getId());
         dto.setId(artist.getId());
         dto.setName(artist.getName());
         return dto;
