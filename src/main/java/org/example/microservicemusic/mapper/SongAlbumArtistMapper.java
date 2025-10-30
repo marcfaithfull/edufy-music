@@ -12,13 +12,14 @@ public class SongAlbumArtistMapper {
 
     public SongAlbumArtistDto toDto(Song song) {
         SongAlbumArtistDto dto = new SongAlbumArtistDto();
+        dto.setUrl("https://stream.edufy.com/song/" + song.getId());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
         dto.setLength(song.getLength());
         dto.setGenre(song.getGenre());
         //dto.setArtistId(song.getArtist().getId());
-        dto.setArtist(song.getArtist());
         dto.setAlbums(song.getAlbums());
+        dto.setArtist(song.getArtist());
         return dto;
     }
 

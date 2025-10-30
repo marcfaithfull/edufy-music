@@ -55,11 +55,11 @@ public class SecurityConfig {
                 .httpBasic(withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/edufy/music/**").authenticated()
+                        .requestMatchers("/**").authenticated()
                 )
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")
-                        .ignoringRequestMatchers("/edufy/music/**")
+                        .ignoringRequestMatchers("/**")
                 )
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable

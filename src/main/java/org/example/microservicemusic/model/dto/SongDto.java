@@ -5,10 +5,19 @@ import org.example.microservicemusic.model.enumeration.Genre;
 import java.math.BigDecimal;
 
 public class SongDto {
+    private String url;
     private  Long id;
     private String title;
     private BigDecimal length;
     private Genre genre;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public Long getId() {
         return id;

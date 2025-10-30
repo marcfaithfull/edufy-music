@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 public class SongAlbumArtistDto {
+    private String url;
     private Long id;
     private String title;
     private BigDecimal length;
@@ -15,6 +16,14 @@ public class SongAlbumArtistDto {
     private Set<Album> albums;
     //private Long artistId;
     private Artist artist;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public Long getId() {
         return id;

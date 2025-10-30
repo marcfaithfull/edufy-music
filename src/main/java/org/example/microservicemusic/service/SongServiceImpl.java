@@ -3,27 +3,24 @@ package org.example.microservicemusic.service;
 import jakarta.transaction.Transactional;
 import org.example.microservicemusic.exception.RequestNotValidException;
 import org.example.microservicemusic.mapper.SongAlbumArtistMapper;
-import org.example.microservicemusic.model.dto.SaveSongDto;
+import org.example.microservicemusic.model.dto.UploadSongDto;
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
 import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.model.entity.Album;
 import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.exception.ResourceNotFoundException;
-import org.example.microservicemusic.mapper.SongMapper;
+//import org.example.microservicemusic.mapper.SongMapper;
 import org.example.microservicemusic.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SongServiceImpl implements SongService {
     SongRepository songRepository;
-    SongMapper songMapper;
+    //SongMapper songMapper;
     SongAlbumArtistMapper songAlbumArtistMapper;
     ArtistRepository artistRepository;
     UserRepository userRepository;
@@ -31,12 +28,14 @@ public class SongServiceImpl implements SongService {
     AlbumRepository albumRepository;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, SongAlbumArtistMapper songAlbumArtistMapper,
+    public SongServiceImpl(SongRepository songRepository,
+                           //SongMapper songMapper,
+                           SongAlbumArtistMapper songAlbumArtistMapper,
                            ArtistRepository artistRepository, UserRepository userRepository,
                            //UserSongReactionRepository userSongReactionRepository,
                            AlbumRepository albumRepository) {
         this.songRepository = songRepository;
-        this.songMapper = songMapper;
+        //this.songMapper = songMapper;
         this.songAlbumArtistMapper = songAlbumArtistMapper;
         this.artistRepository = artistRepository;
         this.userRepository = userRepository;
@@ -46,27 +45,41 @@ public class SongServiceImpl implements SongService {
 
     // CRUD
 
-    public Long createSong(SaveSongDto saveSongDto) {
-        if (saveSongDto.getTitle() == null || saveSongDto.getTitle().isBlank()) {
+    @Transactional
+    public Long createSong(UploadSongDto uploadSongDto) {
+        if (uploadSongDto.getTitle() == null || uploadSongDto.getTitle().isBlank()) {
             throw new RequestNotValidException("title is required");
         }
-        if (saveSongDto.getLength() == null) {
+        if (uploadSongDto.getLength() == null) {
             throw new RequestNotValidException("length is required");
         }
-        if (saveSongDto.getArtistId() == null || saveSongDto.getArtistId() == 0) {
+        if (uploadSongDto.getArtistId() == null || uploadSongDto.getArtistId() == 0) {
             throw new RequestNotValidException("artistId is required");
         }
-        if (saveSongDto.getGenre() == null) {
+        if (uploadSongDto.getGenre() == null) {
             throw new RequestNotValidException("genre is required");
         }
-        Artist artist = artistRepository.findById(saveSongDto.getArtistId())
-                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + saveSongDto.getArtistId() + " not found"));
+        Artist artist = artistRepository.findById(uploadSongDto.getArtistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + uploadSongDto.getArtistId() + " not found"));
+
+        Set<Album> albums = new HashSet<>();
+        Long albumId = uploadSongDto.getAlbumId();
+        if(albumId != null && !albumId.equals(0L)) {
+            Album album = albumRepository.findById(uploadSongDto.getAlbumId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + uploadSongDto.getAlbumId() + " not found"));
+            albums.add(album);
+        }
 
         Song song = new Song(
-                saveSongDto.getTitle(),
-                saveSongDto.getLength(),
+                uploadSongDto.getTitle(),
+                uploadSongDto.getLength(),
                 artist,
-                saveSongDto.getGenre());
+                uploadSongDto.getGenre());
+
+        for (Album album : albums) {
+            song.getAlbums().add(album);
+            album.getSongs().add(song);
+        }
 
         songRepository.save(song);
         return song.getId();
@@ -78,28 +91,42 @@ public class SongServiceImpl implements SongService {
         return songAlbumArtistMapper.toDto(song);
     }
 
-    public void updateSong(Long id, SaveSongDto saveSongDto) {
+    public void updateSong(Long id, UploadSongDto uploadSongDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        if (!(saveSongDto.getArtistId() == null || saveSongDto.getArtistId() == 0)) {
-            Artist artist = artistRepository.findById(saveSongDto.getArtistId())
+        if (!(uploadSongDto.getArtistId() == null || uploadSongDto.getArtistId() == 0)) {
+            Artist artist = artistRepository.findById(uploadSongDto.getArtistId())
                     .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
             song.setArtist(artist);
         }
+
+        Set<Album> albums = new HashSet<>();
+        Long albumId = uploadSongDto.getAlbumId();
+        if(albumId != null && !albumId.equals(0L)) {
+            Album album = albumRepository.findById(uploadSongDto.getAlbumId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + uploadSongDto.getAlbumId() + " not found"));
+            albums.add(album);
+        }
+
+        for (Album album : albums) {
+            song.getAlbums().add(album);
+            album.getSongs().add(song);
+        }
+
         if (!(song.getTitle() == null)) {
-            song.setTitle(saveSongDto.getTitle());
+            song.setTitle(uploadSongDto.getTitle());
         }
         if (!(song.getLength() == null)) {
-            song.setLength(saveSongDto.getLength());
+            song.setLength(uploadSongDto.getLength());
         }
-        if (saveSongDto.getGenre() != null) {
-            song.setGenre(saveSongDto.getGenre());
+        if (uploadSongDto.getGenre() != null) {
+            song.setGenre(uploadSongDto.getGenre());
         }
         songRepository.save(song);
     }
 
     @Transactional
-    public void deleteSongById(Long id) {
+    public Song deleteSongById(Long id) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
         Set<Album> albums = song.getAlbums();
@@ -107,13 +134,14 @@ public class SongServiceImpl implements SongService {
             album.getSongs().remove(song);
         }
         songRepository.deleteById(id);
+        return song;
     }
 
     // OTHER ENDPOINTS
 
-    public List<SongDto> getAllSongs() {
+    public List<SongAlbumArtistDto> getAllSongs() {
         List<Song> songs = songRepository.findAll();
-        return songMapper.songListToDto(songs);
+        return songAlbumArtistMapper.listToDto(songs);
     }
 
     /*@Override

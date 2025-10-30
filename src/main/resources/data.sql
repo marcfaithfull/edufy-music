@@ -7,7 +7,7 @@ INSERT INTO song (song_id, song_title, song_length, artist_id, song_genre)
 VALUES
     (1,'Red Eye Jedi',4.20,1,'REGGAE'),
     (2, 'How High?',4.20,1,'REGGAE'),
-    (3,'Miss. M J',4.20,1,'REGGAE'),
+    (3,'Miss. Mary Jane',4.20,1,'REGGAE'),
 
     (4,'Hail Satan',7.06,2,'METAL'),
     (5,'Forbidden Fruit',7.06,2,'METAL'),

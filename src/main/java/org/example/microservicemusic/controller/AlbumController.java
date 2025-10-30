@@ -25,12 +25,13 @@ public class AlbumController {
     // CRUD
 
     @Secured("ROLE_USER")
-    @PostMapping("/create/album")
+    @PostMapping("/create/albuminfo")
     public ResponseEntity<Map<String, Object>> createAlbum(@RequestBody AlbumDto albumDto) {
         Long id = albumService.createAlbum(albumDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
-                "Album with id " + id + " has been created"
+                "Album with id " + id + " has been created",
+                "/create/albuminfo/" + id
         ));
     }
 
@@ -46,7 +47,8 @@ public class AlbumController {
         albumService.updateAlbum(id, albumDto);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Album with id " + id + " has been updated"
+                "Album with id " + id + " has been updated",
+                "/update/album/" + id
         ));
     }
 
@@ -56,7 +58,8 @@ public class AlbumController {
         albumService.deleteAlbumById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Album with id " + id + " has been deleted"
+                "Album with id " + id + " has been deleted",
+                "/delete/album/" + id
         ));
     }
 

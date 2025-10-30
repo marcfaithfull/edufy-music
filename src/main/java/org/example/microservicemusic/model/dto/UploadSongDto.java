@@ -4,11 +4,12 @@ import org.example.microservicemusic.model.enumeration.Genre;
 
 import java.math.BigDecimal;
 
-public class SaveSongDto {
+public class UploadSongDto {
     private Long id;
     private String title;
     private BigDecimal length;
     private Long artistId;
+    private Long albumId;
     private Genre genre;
 
     public Long getId() {
@@ -41,6 +42,14 @@ public class SaveSongDto {
 
     public void setArtistId(Long artistId) {
         this.artistId = artistId;
+    }
+
+    public Long getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(Long albumId) {
+        this.albumId = albumId;
     }
 
     public Genre getGenre() {

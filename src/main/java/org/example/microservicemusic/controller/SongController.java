@@ -1,9 +1,10 @@
 package org.example.microservicemusic.controller;
 
-import org.example.microservicemusic.model.dto.SaveSongDto;
+import org.example.microservicemusic.model.dto.UploadSongDto;
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
 import org.example.microservicemusic.mapper.ResponseMapper;
 import org.example.microservicemusic.model.dto.SongDto;
+import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/edufy/music")
+//@RequestMapping("/edufy/music")
 public class SongController {
     private final SongService songService;
 
@@ -27,12 +28,13 @@ public class SongController {
     // CRUD
 
     @Secured("ROLE_ADMIN")
-    @PostMapping("/create/song")
-    public ResponseEntity<Map<String, Object>> createSong(@RequestBody SaveSongDto saveSongDto) {
-        Long id = songService.createSong(saveSongDto);
+    @PostMapping("/upload/song")
+    public ResponseEntity<Map<String, Object>> createSong(@RequestBody UploadSongDto uploadSongDto) {
+        Long id = songService.createSong(uploadSongDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
-                "Song with id " + id + " has been created"
+                "Song with id " + id + " has been uploaded",
+                "/upload/song/"
         ));
     }
 
@@ -42,27 +44,30 @@ public class SongController {
         SongAlbumArtistDto songAlbumArtistDto = songService.getSongById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                songAlbumArtistDto.getTitle() + " by " + songAlbumArtistDto.getArtist().getName() + " is currently playing"
+                songAlbumArtistDto.getTitle() + " by " + songAlbumArtistDto.getArtist().getName() + " is currently playing",
+                "/play/song/" + id
         ));
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/update/song/{id}")
-    public ResponseEntity<Map<String, Object>> updateSongById(@PathVariable Long id, @RequestBody SaveSongDto saveSongDto) {
-        songService.updateSong(id, saveSongDto);
+    public ResponseEntity<Map<String, Object>> updateSongById(@PathVariable Long id, @RequestBody UploadSongDto uploadSongDto) {
+        songService.updateSong(id, uploadSongDto);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Song with id " + id + " has been updated"
+                "Song with id " + id + " has been updated",
+                "/update/song/" + id
         ));
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/delete/song/{id}")
     public ResponseEntity<Map<String, Object>> deleteSongById(@PathVariable Long id) {
-        songService.deleteSongById(id);
+        Song song = songService.deleteSongById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Song with id " + id + " has been deleted"
+                song.getTitle() + " has been deleted",
+                "/delete/song/" + id
         ));
     }
 
@@ -70,7 +75,7 @@ public class SongController {
 
     @Secured("ROLE_USER")
     @GetMapping("/songs")
-    public ResponseEntity<List<SongDto>> getAllSongs() {
+    public ResponseEntity<List<SongAlbumArtistDto>> getAllSongs() {
         return ResponseEntity.status(HttpStatus.OK).body(songService.getAllSongs());
     }
 
@@ -95,12 +100,13 @@ public class SongController {
     }*/
 
     @Secured("ROLE_USER")
-    @GetMapping("/randomise/song")
+    @GetMapping("/play/random/song")
     public ResponseEntity<Map<String, Object>> getRandomSong() {
         SongAlbumArtistDto randomSong = songService.getRandomSong();
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                randomSong.getTitle() + " by " + randomSong.getArtist().getName() + " is currently playing"
+                randomSong.getTitle() + " by " + randomSong.getArtist().getName() + " is currently playing",
+                "/play/song/" + randomSong.getId()
         ));
     }
 

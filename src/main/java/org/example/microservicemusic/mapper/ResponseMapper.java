@@ -6,11 +6,12 @@ import java.util.Map;
 
 public class ResponseMapper {
 
-    public static Map<String, Object> mapResponse(int status, String message) {
+    public static Map<String, Object> mapResponse(int status, String message, String url) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", status);
         response.put("message", message);
+        response.put("url", "https://stream.edufy.com" + url);
         return response;
     }
 }

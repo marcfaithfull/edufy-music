@@ -1,3 +1,4 @@
+/*
 package org.example.microservicemusic.mapper;
 
 import org.example.microservicemusic.model.dto.SongAlbumArtistDto;
@@ -11,7 +12,8 @@ import java.util.List;
 @Service
 public class SongMapper {
 
-    /*public SongAlbumArtistDto toDto(Song song) {
+    */
+/*public SongAlbumArtistDto toDto(Song song) {
         SongAlbumArtistDto dto = new SongAlbumArtistDto();
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
@@ -30,17 +32,18 @@ public class SongMapper {
             dTos.add(dto);
         }
         return dTos;
-    }*/
+    }*//*
+
 
     public SongDto songToDto(Song song) {
         SongDto dto = new SongDto();
+        dto.setUrl("https://stream.edufy.com/song/" + song.getId());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
         dto.setLength(song.getLength());
         dto.setGenre(song.getGenre());
         return dto;
     }
-
 
     public List<SongDto> songListToDto(List<Song> songs) {
         List<SongDto> dTos = new ArrayList<>();
@@ -51,3 +54,4 @@ public class SongMapper {
         return dTos;
     }
 }
+*/

@@ -27,7 +27,7 @@ public class Album {
     private int tracks;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "album_song",
             joinColumns = @JoinColumn(name = "album_id"),

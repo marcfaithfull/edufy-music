@@ -30,12 +30,13 @@ public class ArtistController {
         Long id = artistService.createArtist(artistDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
-                "Artist with id " + id + " has been created"
+                "Artist with id " + id + " has been created",
+                "/create/artist"
         ));
     }
 
     @Secured("ROLE_USER")
-    @GetMapping("/read/artist/{id}")
+    @GetMapping("/find/artist/{id}")
     public ResponseEntity<ArtistDto> getArtistById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.getArtistById(id));
     }
@@ -46,7 +47,8 @@ public class ArtistController {
         artistService.updateArtist(id, artistDto);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Artist with id " + " has been updated"
+                "Artist with id " + " has been updated",
+                "/update/artist/" + id
         ));
     }
 
@@ -56,7 +58,8 @@ public class ArtistController {
         artistService.deleteArtistById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
                 200,
-                "Artist with id " + " has been deleted"
+                "Artist with id " + " has been deleted",
+                "/delete/artist/" + id
         ));
     }
 
