@@ -1,7 +1,9 @@
 package org.example.microservicemusic.mapper;
 
-import org.example.microservicemusic.model.dto.AlbumDto;
+import org.example.microservicemusic.model.dto.PostAlbumDto;
+import org.example.microservicemusic.model.dto.SongDto;
 import org.example.microservicemusic.model.entity.Album;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,18 +11,29 @@ import java.util.List;
 
 @Service
 public class AlbumMapper {
+    SongMapper songMapper;
 
-    public AlbumDto toDto(Album album) {
-        AlbumDto dto = new AlbumDto();
+    @Autowired
+    public AlbumMapper(SongMapper songMapper) {
+        this.songMapper = songMapper;
+    }
+
+    public PostAlbumDto toDto(Album album) {
+        PostAlbumDto dto = new PostAlbumDto();
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
+        dto.setArtistId(album.getArtist().getId());
+        dto.getSongId().forEach((songId) -> {
+            SongDto songDto = new SongDto();
+            songDto.setId(songId);
+        });
         return dto;
     }
 
-    public List<AlbumDto> listToDto(List<Album> albums) {
-        List<AlbumDto> dTos = new ArrayList<>();
+    public List<PostAlbumDto> listToDto(List<Album> albums) {
+        List<PostAlbumDto> dTos = new ArrayList<>();
         for (Album album : albums) {
-            AlbumDto dto = toDto(album);
+            PostAlbumDto dto = toDto(album);
             dTos.add(dto);
         }
         return dTos;

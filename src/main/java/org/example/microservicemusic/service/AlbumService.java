@@ -1,20 +1,23 @@
 package org.example.microservicemusic.service;
 
-import org.example.microservicemusic.model.dto.AlbumDto;
+import org.example.microservicemusic.model.dto.SearchAlbumDto;
+import org.example.microservicemusic.model.dto.PostAlbumDto;
+import org.example.microservicemusic.model.dto.AlbumArtistSongDto;
+import org.example.microservicemusic.model.entity.Album;
 
 import java.util.List;
 
 public interface AlbumService {
 
-    Long createAlbum(AlbumDto albumDto);
+    Long createAlbum(PostAlbumDto postAlbumDto);
 
-    AlbumDto getAlbumById(Long id);
+    AlbumArtistSongDto getAlbumById(Long id);
 
-    void updateAlbum(Long id, AlbumDto albumDto);
+    void updateAlbum(Long id, PostAlbumDto postAlbumDto);
 
-    void deleteAlbumById(Long id);
+    Album deleteAlbumById(Long id);
 
-    List<AlbumDto> getAllAlbums();
+    List<AlbumArtistSongDto> getAllAlbums();
 
-    List<AlbumDto> searchResults(AlbumDto search);
+    List<SearchAlbumDto> searchResults(SearchAlbumDto search);
 }

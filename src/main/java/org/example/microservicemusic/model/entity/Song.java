@@ -5,7 +5,6 @@ import org.example.microservicemusic.model.enumeration.Genre;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

@@ -17,7 +17,6 @@ public class SongAlbumArtistMapper {
         dto.setTitle(song.getTitle());
         dto.setLength(song.getLength());
         dto.setGenre(song.getGenre());
-        //dto.setArtistId(song.getArtist().getId());
         dto.setAlbums(song.getAlbums());
         dto.setArtist(song.getArtist());
         return dto;
