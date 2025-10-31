@@ -1,12 +1,10 @@
 package org.example.microservicemusic.model.dto;
 
-import java.math.BigDecimal;
-
 public class AlbumDto {
     private String url;
     private Long id;
     private String title;
-    private BigDecimal length;
+    private int lengthInSeconds;
     private int year;
     private int tracks;
 
@@ -34,12 +32,12 @@ public class AlbumDto {
         this.title = title;
     }
 
-    public BigDecimal getLength() {
-        return length;
+    public int getLength() {
+        return lengthInSeconds;
     }
 
-    public void setLength(BigDecimal length) {
-        this.length = length;
+    public void setLength(int lengthInMinutes) {
+        this.lengthInSeconds = lengthInMinutes;
     }
 
     public int getYear() {

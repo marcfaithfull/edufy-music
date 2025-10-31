@@ -39,7 +39,7 @@ public class SongServiceImpl implements SongService {
         if (postSongDto.getTitle() == null || postSongDto.getTitle().isBlank()) {
             throw new RequestNotValidException("title is required");
         }
-        if (postSongDto.getLength() == null) {
+        if (postSongDto.getLength() == 0) {
             throw new RequestNotValidException("length is required");
         }
         if (postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0) {
@@ -53,7 +53,7 @@ public class SongServiceImpl implements SongService {
 
         Set<Album> albums = new HashSet<>();
         Long albumId = postSongDto.getAlbumId();
-        if(albumId != null && !albumId.equals(0L)) {
+        if (albumId != null && !albumId.equals(0L)) {
             Album album = albumRepository.findById(postSongDto.getAlbumId())
                     .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
             albums.add(album);
@@ -91,7 +91,7 @@ public class SongServiceImpl implements SongService {
 
         Set<Album> albums = new HashSet<>();
         Long albumId = postSongDto.getAlbumId();
-        if(albumId != null && !albumId.equals(0L)) {
+        if (albumId != null && !albumId.equals(0L)) {
             Album album = albumRepository.findById(postSongDto.getAlbumId())
                     .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
             albums.add(album);
@@ -105,8 +105,8 @@ public class SongServiceImpl implements SongService {
         if (!(song.getTitle() == null)) {
             song.setTitle(postSongDto.getTitle());
         }
-        if (!(song.getLength() == null)) {
-            song.setLength(postSongDto.getLength());
+        if (!(song.getLengthInSeconds() == 0)) {
+            song.setLengthInSeconds(postSongDto.getLength());
         }
         if (postSongDto.getGenre() != null) {
             song.setGenre(postSongDto.getGenre());
@@ -118,10 +118,20 @@ public class SongServiceImpl implements SongService {
     public Song deleteSongById(Long id) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
+
         Set<Album> albums = song.getAlbums();
         for (Album album : albums) {
             album.getSongs().remove(song);
+            album.setTracks(album.getSongs().size());
+            Set<Song> songs = album.getSongs();
+
+            int totalLength = 0;
+            for (Song songLength : songs) {
+                totalLength += songLength.getLengthInSeconds();
+            }
+            album.setLength(totalLength);
         }
+
         songRepository.deleteById(id);
         return song;
     }

@@ -2,13 +2,11 @@ package org.example.microservicemusic.model.dto;
 
 import org.example.microservicemusic.model.enumeration.Genre;
 
-import java.math.BigDecimal;
-
 public class SongDto {
     private String url;
     private Long id;
     private String title;
-    private BigDecimal length;
+    private int lengthInSeconds;
     private Genre genre;
 
     public String getUrl() {
@@ -35,12 +33,12 @@ public class SongDto {
         this.title = title;
     }
 
-    public BigDecimal getLength() {
-        return length;
+    public int getLength() {
+        return lengthInSeconds;
     }
 
-    public void setLength(BigDecimal length) {
-        this.length = length;
+    public void setLength(int lengthInMinutes) {
+        this.lengthInSeconds = lengthInMinutes;
     }
 
     public Genre getGenre() {

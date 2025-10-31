@@ -5,18 +5,18 @@ VALUES
 
 INSERT INTO song (song_id, song_title, song_length, artist_id, song_genre)
 VALUES
-    (1,'Red Eye Jedi',4.20,1,'REGGAE'),
-    (2, 'How High?',4.20,1,'REGGAE'),
-    (3,'Miss. Mary Jane',4.20,1,'REGGAE'),
+    (1,'Red Eye Jedi',300,1,'REGGAE'),
+    (2, 'How High?',300,1,'REGGAE'),
+    (3,'Miss. Mary Jane',300,1,'REGGAE'),
 
-    (4,'Hail Satan',7.06,2,'METAL'),
-    (5,'Forbidden Fruit',7.06,2,'METAL'),
-    (6,'The Beast System',7.06,2,'METAL');
+    (4,'Hail Satan',666,2,'METAL'),
+    (5,'Forbidden Fruit',666,2,'METAL'),
+    (6,'The Beast System',666,2,'METAL');
 
 INSERT INTO album (album_id, album_title, album_length, album_year, tracks, artist_id)
 VALUES
-    (1,'Praise Jah',13,2000,3,1),
-    (2,'The Devil''s Greatest Trick',21.18,2005,3,2);
+    (1,'Praise Jah',900,0420,3,1),
+    (2,'The Devil''s Greatest Trick',1998,2020,3,2);
 
 INSERT INTO album_song (album_id, song_id)
 VALUES

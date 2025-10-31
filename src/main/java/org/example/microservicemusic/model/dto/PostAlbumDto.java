@@ -8,6 +8,7 @@ public class PostAlbumDto {
     Long id;
     String title;
     Long artistId;
+    int year;
     Set<Long> songId;
 
     public Long getId() {
@@ -32,6 +33,14 @@ public class PostAlbumDto {
 
     public void setArtistId(Long artistId) {
         this.artistId = artistId;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public Set<Long> getSongId() {

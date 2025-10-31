@@ -2,7 +2,6 @@ package org.example.microservicemusic.service;
 
 import org.example.microservicemusic.exception.RequestNotValidException;
 import org.example.microservicemusic.exception.ResourceNotFoundException;
-import org.example.microservicemusic.mapper.AlbumMapper;
 import org.example.microservicemusic.mapper.AlbumSongMapper;
 import org.example.microservicemusic.mapper.SearchAlbumsMapper;
 import org.example.microservicemusic.model.dto.AlbumDto;
@@ -43,7 +42,7 @@ public class AlbumServiceImpl implements AlbumService {
     // CRUD
 
     @Override
-    public Long createAlbum(PostAlbumDto postAlbumDto) {
+    public Album createAlbum(PostAlbumDto postAlbumDto) {
         if (postAlbumDto.getTitle() == null || postAlbumDto.getTitle().isBlank()) {
             throw new RequestNotValidException("title is required");
         }
@@ -56,6 +55,7 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = new Album();
         album.setTitle(postAlbumDto.getTitle());
         album.setArtist(artist);
+        album.setYear(postAlbumDto.getYear());
 
         Set<Song> songs = new HashSet<>();
 
@@ -68,8 +68,20 @@ public class AlbumServiceImpl implements AlbumService {
             }
         }
         album.setSongs(songs);
+
+        Set<Song> countSongs = album.getSongs();
+        int countedSongs = countSongs.size();
+        album.setTracks(countedSongs);
+
+        int totalLength = 0;
+        for (Song song : countSongs) {
+            int length = song.getLengthInSeconds();
+            totalLength = totalLength + (length);
+        }
+        album.setLength(totalLength);
+
         albumRepository.save(album);
-        return album.getId();
+        return album;
     }
 
     @Override
@@ -105,6 +117,18 @@ public class AlbumServiceImpl implements AlbumService {
                 song.getAlbums().add(album);
             }
             album.setSongs(newSongs);
+
+            Set<Song> countSongs = album.getSongs();
+            int countedSongs = countSongs.size();
+            album.setTracks(countedSongs);
+
+            int totalLength = 0;
+            for (Song song : countSongs) {
+                int length = song.getLengthInSeconds();
+                totalLength = totalLength + (length);
+            }
+            album.setLength(totalLength);
+
             albumRepository.save(album);
         }
     }

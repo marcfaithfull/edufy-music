@@ -1,7 +1,6 @@
 package org.example.microservicemusic.service;
 
 import org.example.microservicemusic.model.dto.AlbumDto;
-import org.example.microservicemusic.model.dto.SearchAlbumDto;
 import org.example.microservicemusic.model.dto.PostAlbumDto;
 import org.example.microservicemusic.model.dto.AlbumArtistSongDto;
 import org.example.microservicemusic.model.entity.Album;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public interface AlbumService {
 
-    Long createAlbum(PostAlbumDto postAlbumDto);
+    Album createAlbum(PostAlbumDto postAlbumDto);
 
     AlbumArtistSongDto getAlbumById(Long id);
 
