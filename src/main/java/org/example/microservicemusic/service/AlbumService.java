@@ -1,5 +1,6 @@
 package org.example.microservicemusic.service;
 
+import org.example.microservicemusic.model.dto.AlbumDto;
 import org.example.microservicemusic.model.dto.SearchAlbumDto;
 import org.example.microservicemusic.model.dto.PostAlbumDto;
 import org.example.microservicemusic.model.dto.AlbumArtistSongDto;
@@ -19,5 +20,5 @@ public interface AlbumService {
 
     List<AlbumArtistSongDto> getAllAlbums();
 
-    List<SearchAlbumDto> searchResults(SearchAlbumDto search);
+    List<AlbumDto> searchResults(AlbumDto search);
 }

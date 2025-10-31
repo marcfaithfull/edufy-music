@@ -22,16 +22,16 @@ public class Song {
     @Column(name = "song_length")
     private BigDecimal length;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "song_genre")
+    private Genre genre;
+
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
     /*@OneToMany(mappedBy = "song")
     private List<UserSongReaction> reactions;*/
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "song_genre")
-    private Genre genre;
 
     @ManyToMany(mappedBy = "songs")
     private Set<Album> albums = new HashSet<>();

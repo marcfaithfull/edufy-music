@@ -1,9 +1,12 @@
 package org.example.microservicemusic.model.dto;
 
+import org.example.microservicemusic.model.enumeration.Genre;
+
 public class ArtistDto {
     String url;
     Long id;
     String name;
+    Genre genre;
 
     public String getUrl() {
         return url;
@@ -27,5 +30,13 @@ public class ArtistDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 }
