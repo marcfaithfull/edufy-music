@@ -32,6 +32,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
         Artist artist = new Artist();
         artist.setName(artistDto.getName());
+        artist.setGenre(artistDto.getGenre());
         artistRepository.save(artist);
         return artist;
     }

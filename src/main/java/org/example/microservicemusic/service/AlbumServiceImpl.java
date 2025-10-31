@@ -5,7 +5,7 @@ import org.example.microservicemusic.exception.ResourceNotFoundException;
 import org.example.microservicemusic.mapper.AlbumMapper;
 import org.example.microservicemusic.mapper.AlbumSongMapper;
 import org.example.microservicemusic.mapper.SearchAlbumsMapper;
-import org.example.microservicemusic.model.dto.SearchAlbumDto;
+import org.example.microservicemusic.model.dto.AlbumDto;
 import org.example.microservicemusic.model.dto.PostAlbumDto;
 import org.example.microservicemusic.model.dto.AlbumArtistSongDto;
 import org.example.microservicemusic.model.entity.Album;
@@ -25,17 +25,15 @@ import java.util.Set;
 @Service
 public class AlbumServiceImpl implements AlbumService {
     AlbumRepository albumRepository;
-    AlbumMapper albumMapper;
     ArtistRepository artistRepository;
     SongRepository songRepository;
     AlbumSongMapper albumSongMapper;
     SearchAlbumsMapper searchAlbumsMapper;
 
     @Autowired
-    public AlbumServiceImpl(AlbumRepository albumRepository, AlbumMapper albumMapper, ArtistRepository artistRepository,
-                            SongRepository songRepository, AlbumSongMapper albumSongMapper, SearchAlbumsMapper searchAlbumsMapper) {
+    public AlbumServiceImpl(AlbumRepository albumRepository, ArtistRepository artistRepository, SongRepository songRepository,
+                            AlbumSongMapper albumSongMapper, SearchAlbumsMapper searchAlbumsMapper) {
         this.albumRepository = albumRepository;
-        this.albumMapper = albumMapper;
         this.artistRepository = artistRepository;
         this.songRepository = songRepository;
         this.albumSongMapper = albumSongMapper;
@@ -85,8 +83,30 @@ public class AlbumServiceImpl implements AlbumService {
     public void updateAlbum(Long id, PostAlbumDto postAlbumDto) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new RequestNotValidException("Album Not Found"));
-        album.setTitle(postAlbumDto.getTitle());
-        albumRepository.save(album);
+        Artist artist = artistRepository.findById(postAlbumDto.getArtistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
+        if (postAlbumDto.getTitle() != null || postAlbumDto.getTitle().isBlank()) {
+            album.setTitle(postAlbumDto.getTitle());
+        }
+        if (postAlbumDto.getArtistId() != null || postAlbumDto.getArtistId().equals(0L)) {
+            album.setArtist(artist);
+        }
+
+        if (postAlbumDto.getSongId() != null) {
+            for (Song oldSongs : album.getSongs()) {
+                oldSongs.getAlbums().remove(album);
+            }
+            album.getSongs().clear();
+            Set<Song> newSongs = new HashSet<>();
+            for (Long songId : postAlbumDto.getSongId()) {
+                Song song = songRepository.findById(songId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Song not found"));
+                newSongs.add(song);
+                song.getAlbums().add(album);
+            }
+            album.setSongs(newSongs);
+            albumRepository.save(album);
+        }
     }
 
     @Override
@@ -106,7 +126,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<SearchAlbumDto> searchResults(SearchAlbumDto search) {
+    public List<AlbumDto> searchResults(AlbumDto search) {
         List<Album> albums = albumRepository.findAll();
         List<Album> filteredAlbums = new ArrayList<>();
         for (Album album : albums) {

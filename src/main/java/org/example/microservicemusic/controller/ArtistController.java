@@ -31,7 +31,7 @@ public class ArtistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
                 artist.getName() + " has been created",
-                "/create/artist"
+                "/artist/" + artist.getId()
         ));
     }
 

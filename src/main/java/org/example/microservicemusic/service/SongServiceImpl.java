@@ -9,7 +9,6 @@ import org.example.microservicemusic.model.entity.Album;
 import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.entity.Song;
 import org.example.microservicemusic.exception.ResourceNotFoundException;
-//import org.example.microservicemusic.mapper.SongMapper;
 import org.example.microservicemusic.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,26 +18,17 @@ import java.util.*;
 @Service
 public class SongServiceImpl implements SongService {
     SongRepository songRepository;
-    //SongMapper songMapper;
     SongAlbumArtistMapper songAlbumArtistMapper;
     ArtistRepository artistRepository;
-    UserRepository userRepository;
-    //UserSongReactionRepository userSongReactionRepository;
     AlbumRepository albumRepository;
 
     @Autowired
     public SongServiceImpl(SongRepository songRepository,
-                           //SongMapper songMapper,
-                           SongAlbumArtistMapper songAlbumArtistMapper,
-                           ArtistRepository artistRepository, UserRepository userRepository,
-                           //UserSongReactionRepository userSongReactionRepository,
+                           SongAlbumArtistMapper songAlbumArtistMapper, ArtistRepository artistRepository,
                            AlbumRepository albumRepository) {
         this.songRepository = songRepository;
-        //this.songMapper = songMapper;
         this.songAlbumArtistMapper = songAlbumArtistMapper;
         this.artistRepository = artistRepository;
-        this.userRepository = userRepository;
-        //this.userSongReactionRepository = userSongReactionRepository;
         this.albumRepository = albumRepository;
     }
 

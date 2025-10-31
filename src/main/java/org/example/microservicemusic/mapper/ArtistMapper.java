@@ -15,6 +15,7 @@ public class ArtistMapper {
         dto.setUrl("https://stream.edufy.com/artist/" + artist.getId());
         dto.setId(artist.getId());
         dto.setName(artist.getName());
+        dto.setGenre(artist.getGenre());
         return dto;
     }
 
