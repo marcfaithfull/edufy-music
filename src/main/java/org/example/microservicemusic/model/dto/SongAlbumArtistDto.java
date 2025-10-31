@@ -4,14 +4,13 @@ import org.example.microservicemusic.model.entity.Album;
 import org.example.microservicemusic.model.entity.Artist;
 import org.example.microservicemusic.model.enumeration.Genre;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 public class SongAlbumArtistDto {
     private String url;
     private Long id;
     private String title;
-    private BigDecimal length;
+    private int lengthInSeconds;
     private Genre genre;
     private Set<Album> albums;
     private Artist artist;
@@ -40,12 +39,12 @@ public class SongAlbumArtistDto {
         this.title = title;
     }
 
-    public BigDecimal getLength() {
-        return length;
+    public int getLength() {
+        return lengthInSeconds;
     }
 
-    public void setLength(BigDecimal length) {
-        this.length = length;
+    public void setLength(int lengthInMinutes) {
+        this.lengthInSeconds = lengthInMinutes;
     }
 
     public Set<Album> getAlbums() {

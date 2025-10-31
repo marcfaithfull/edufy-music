@@ -15,7 +15,7 @@ public class SongMapper {
         dto.setUrl("https://stream.edufy.com/song/" + song.getId());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
-        dto.setLength(song.getLength());
+        dto.setLength(song.getLengthInSeconds());
         dto.setGenre(song.getGenre());
         return dto;
     }

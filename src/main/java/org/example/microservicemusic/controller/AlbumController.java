@@ -29,11 +29,11 @@ public class AlbumController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/create/album")
     public ResponseEntity<Map<String, Object>> createAlbum(@RequestBody PostAlbumDto postAlbumDto) {
-        Long id = albumService.createAlbum(postAlbumDto);
+        Album album = albumService.createAlbum(postAlbumDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
-                "Album with id " + id + " has been created",
-                "/album/" + id
+                album.getTitle() + " has been created",
+                "/album/" + album.getId()
         ));
     }
 

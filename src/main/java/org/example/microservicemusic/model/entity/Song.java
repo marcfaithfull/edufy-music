@@ -3,7 +3,6 @@ package org.example.microservicemusic.model.entity;
 import jakarta.persistence.*;
 import org.example.microservicemusic.model.enumeration.Genre;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class Song {
     private String title;
 
     @Column(name = "song_length")
-    private BigDecimal length;
+    private int lengthInSeconds;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "song_genre")
@@ -39,9 +38,9 @@ public class Song {
     public Song() {
     }
 
-    public Song(String title, BigDecimal length, Artist artist, Genre genre) {
+    public Song(String title, int lengthInSeconds, Artist artist, Genre genre) {
         this.title = title;
-        this.length = length;
+        this.lengthInSeconds = lengthInSeconds;
         this.artist = artist;
         this.genre = genre;
     }
@@ -62,12 +61,12 @@ public class Song {
         this.title = title;
     }
 
-    public BigDecimal getLength() {
-        return length;
+    public int getLengthInSeconds() {
+        return lengthInSeconds;
     }
 
-    public void setLength(BigDecimal length) {
-        this.length = length;
+    public void setLengthInSeconds(int length) {
+        this.lengthInSeconds = length;
     }
 
     public Set<Album> getAlbums() {
