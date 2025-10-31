@@ -1,7 +1,7 @@
 package org.example.microservicemusic.controller;
 
 import org.example.microservicemusic.mapper.ResponseMapper;
-import org.example.microservicemusic.model.dto.SearchAlbumDto;
+import org.example.microservicemusic.model.dto.AlbumDto;
 import org.example.microservicemusic.model.dto.PostAlbumDto;
 import org.example.microservicemusic.model.dto.AlbumArtistSongDto;
 import org.example.microservicemusic.model.entity.Album;
@@ -33,7 +33,7 @@ public class AlbumController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
                 "Album with id " + id + " has been created",
-                "/create/albuminfo/" + id
+                "/album/" + id
         ));
     }
 
@@ -75,8 +75,8 @@ public class AlbumController {
 
     @Secured("ROLE_USER")
     @PostMapping("/search/album")
-    public ResponseEntity<List<SearchAlbumDto>> searchAlbum(@RequestBody SearchAlbumDto search) {
-        List<SearchAlbumDto> searchResults = albumService.searchResults(search);
+    public ResponseEntity<List<AlbumDto>> searchAlbum(@RequestBody AlbumDto search) {
+        List<AlbumDto> searchResults = albumService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);
     }
 }

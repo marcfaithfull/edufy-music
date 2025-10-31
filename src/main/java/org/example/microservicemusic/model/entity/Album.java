@@ -3,6 +3,7 @@ package org.example.microservicemusic.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Album {
     private String title;
 
     @Column(name = "album_length")
-    private double length;
+    private BigDecimal length;
 
     @Column(name = "album_year")
     private int year;
@@ -56,11 +57,11 @@ public class Album {
         this.title = title;
     }
 
-    public double getLength() {
+    public BigDecimal getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(BigDecimal length) {
         this.length = length;
     }
 

@@ -32,7 +32,7 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapResponse(
                 201,
                 song.getTitle() + " has been uploaded",
-                "/upload/song/"
+                "/song/"  + song.getId()
         ));
     }
 
