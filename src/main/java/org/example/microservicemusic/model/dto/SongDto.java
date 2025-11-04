@@ -37,8 +37,8 @@ public class SongDto {
         return lengthInSeconds;
     }
 
-    public void setLength(int lengthInMinutes) {
-        this.lengthInSeconds = lengthInMinutes;
+    public void setLength(int lengthInSeconds) {
+        this.lengthInSeconds = lengthInSeconds;
     }
 
     public Genre getGenre() {

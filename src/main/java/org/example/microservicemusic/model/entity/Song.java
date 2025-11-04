@@ -29,9 +29,6 @@ public class Song {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    /*@OneToMany(mappedBy = "song")
-    private List<UserSongReaction> reactions;*/
-
     @ManyToMany(mappedBy = "songs")
     private Set<Album> albums = new HashSet<>();
 

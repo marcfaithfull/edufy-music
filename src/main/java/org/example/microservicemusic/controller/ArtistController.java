@@ -71,33 +71,6 @@ public class ArtistController {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.getAllArtists());
     }
 
-    /*@PutMapping("/like/artist/{id}")
-    public ResponseEntity<Map<String, Object>> likeArtist(@PathVariable Long id) {
-        artistService.likeArtist(id);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You liked song with id " + id
-        ));
-    }
-
-    @PutMapping("/dislike/song/{id}")
-    public ResponseEntity<Map<String, Object>> dislikeArtist(@PathVariable Long id) {
-        artistService.dislikeArtist(id);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You disliked song with id " + id
-        ));
-    }
-
-    @PutMapping("/randomise/artist")
-    public ResponseEntity<Map<String, Object>> randomiseArtist() {
-        artistService.randomiseArtistStats();
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You randomised the album stats"
-        ));
-    }*/
-
     @Secured("ROLE_USER")
     @PostMapping("/search/artist")
     public ResponseEntity<List<ArtistDto>> searchArtist(@RequestBody ArtistDto search) {

@@ -77,26 +77,6 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.OK).body(songService.getAllSongs());
     }
 
-    /*@Secured("ROLE_USER")
-    @PutMapping("/like/song/{id}")
-    public ResponseEntity<Map<String, Object>> likeSong(@PathVariable Long id, Principal principal) {
-        songService.likeSong(id, principal);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You liked song with id " + id
-        ));
-    }
-
-    @Secured("ROLE_USER")
-    @PutMapping("/dislike/song/{id}")
-    public ResponseEntity<Map<String, Object>> dislikeSong(@PathVariable Long id, Principal principal) {
-        songService.dislikeSong(id, principal);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You disliked song with id " + id
-        ));
-    }*/
-
     @Secured("ROLE_USER")
     @GetMapping("/play/random/song")
     public ResponseEntity<Map<String, Object>> getRandomSong() {
@@ -107,16 +87,6 @@ public class SongController {
                 "/play/song/" + randomSong.getId()
         ));
     }
-
-    /*@Secured("ROLE_USER")
-    @PutMapping("/randomise/song/stats")
-    public ResponseEntity<Map<String, Object>> randomiseSongStats() {
-        songService.randomiseSongStats();
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseMapper.mapResponse(
-                200,
-                "You randomised the song stats"
-        ));
-    }*/
 
     @Secured("ROLE_USER")
     @PostMapping("/search/song")

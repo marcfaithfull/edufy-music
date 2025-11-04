@@ -18,13 +18,7 @@ public interface SongService {
 
     List<SongAlbumArtistDto> getAllSongs();
 
-    //void likeSong(Long id, Principal principal);
-
-    //void dislikeSong(Long id, Principal principal);
-
     SongAlbumArtistDto getRandomSong();
-
-    //void randomiseSongStats();
 
     List<SongAlbumArtistDto> searchResults(SongAlbumArtistDto search);
 

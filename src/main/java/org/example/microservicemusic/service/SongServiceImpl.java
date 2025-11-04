@@ -34,12 +34,13 @@ public class SongServiceImpl implements SongService {
 
     // CRUD
 
+    @Override
     @Transactional
     public Song createSong(PostSongDto postSongDto) {
         if (postSongDto.getTitle() == null || postSongDto.getTitle().isBlank()) {
             throw new RequestNotValidException("title is required");
         }
-        if (postSongDto.getLength() == 0) {
+        if (postSongDto.getLengthInSeconds() == 0) {
             throw new RequestNotValidException("length is required");
         }
         if (postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0) {
@@ -61,7 +62,7 @@ public class SongServiceImpl implements SongService {
 
         Song song = new Song(
                 postSongDto.getTitle(),
-                postSongDto.getLength(),
+                postSongDto.getLengthInSeconds(),
                 artist,
                 postSongDto.getGenre());
 
@@ -74,12 +75,14 @@ public class SongServiceImpl implements SongService {
         return song;
     }
 
+    @Override
     public SongAlbumArtistDto getSongById(Long id) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
         return songAlbumArtistMapper.toDto(song);
     }
 
+    @Override
     public void updateSong(Long id, PostSongDto postSongDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
@@ -106,7 +109,7 @@ public class SongServiceImpl implements SongService {
             song.setTitle(postSongDto.getTitle());
         }
         if (!(song.getLengthInSeconds() == 0)) {
-            song.setLengthInSeconds(postSongDto.getLength());
+            song.setLengthInSeconds(postSongDto.getLengthInSeconds());
         }
         if (postSongDto.getGenre() != null) {
             song.setGenre(postSongDto.getGenre());
@@ -114,6 +117,7 @@ public class SongServiceImpl implements SongService {
         songRepository.save(song);
     }
 
+    @Override
     @Transactional
     public Song deleteSongById(Long id) {
         Song song = songRepository.findById(id)
@@ -138,40 +142,11 @@ public class SongServiceImpl implements SongService {
 
     // OTHER ENDPOINTS
 
+    @Override
     public List<SongAlbumArtistDto> getAllSongs() {
         List<Song> songs = songRepository.findAll();
         return songAlbumArtistMapper.listToDto(songs);
     }
-
-    /*@Override
-    public void likeSong(Long id, Principal principal) {
-        Song song = songRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        User principalUser = userRepository.findByUsername(principal.getName());
-        User databaseUser = userRepository.findById(principalUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-
-        UserSongReaction userSongReaction = new UserSongReaction();
-        userSongReaction.setUser(databaseUser);
-        userSongReaction.setSong(song);
-        userSongReaction.setReaction(Reaction.LIKE);
-        userSongReactionRepository.save(userSongReaction);
-    }
-
-    @Override
-    public void dislikeSong(Long id, Principal principal) {
-        Song song = songRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
-        User principalUser = userRepository.findByUsername(principal.getName());
-        User databaseUser = userRepository.findById(principalUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-
-        UserSongReaction userSongReaction = new UserSongReaction();
-        userSongReaction.setUser(databaseUser);
-        userSongReaction.setSong(song);
-        userSongReaction.setReaction(Reaction.DISLIKE);
-        userSongReactionRepository.save(userSongReaction);
-    }*/
 
     @Override
     public SongAlbumArtistDto getRandomSong() {
@@ -181,27 +156,6 @@ public class SongServiceImpl implements SongService {
         System.out.println(song.getArtist().getName());
         return songAlbumArtistMapper.toDto(song);
     }
-
-    /*@Override
-    public void randomiseSongStats() {
-        List<Song> songs = songRepository.findAll();
-        Random randomSong = new Random();
-        Song song = songs.get(randomSong.nextInt(songs.size()));
-
-        List<User> users = userRepository.findAll();
-        Random randomUser = new Random();
-        User user = users.get(randomUser.nextInt(users.size()));
-
-        Random randomReaction = new Random();
-        Reaction[] reactions = Reaction.values();
-        Reaction reaction = reactions[randomReaction.nextInt(reactions.length)];
-
-        UserSongReaction userSongReaction = new UserSongReaction();
-        userSongReaction.setSong(song);
-        userSongReaction.setUser(user);
-        userSongReaction.setReaction(reaction);
-        userSongReactionRepository.save(userSongReaction);
-    }*/
 
     @Override
     public List<SongAlbumArtistDto> searchResults(SongAlbumArtistDto search) {
