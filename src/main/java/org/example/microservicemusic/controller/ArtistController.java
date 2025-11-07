@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/v1/music")
 public class ArtistController {
     private final ArtistService artistService;
 
