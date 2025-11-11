@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>microservice-music</artifactId>
+    <artifactId>edufy-music</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>microservice-music</name>
-    <description>microservice-music</description>
+    <name>edufy-music</name>
+    <description>edufy-music</description>
     <url/>
     <licenses>
         <license/>
