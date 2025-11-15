@@ -8,5 +8,6 @@ public enum Genre {
     PSYCHEDELIC,
     CLASSICAL,
     PUNK,
-    REGGAE
+    REGGAE,
+    COMEDY
 }

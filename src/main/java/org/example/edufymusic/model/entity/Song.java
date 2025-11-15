@@ -18,7 +18,7 @@ public class Song {
     @Column(name = "song_title")
     private String title;
 
-    @Column(name = "song_length")
+    @Column(name = "song_length_in_seconds")
     private int lengthInSeconds;
 
     @Enumerated(EnumType.STRING)

@@ -1,22 +1,36 @@
 INSERT INTO artist (artist_id, artist_name, artist_genre)
 VALUES
-    (1,'Green Growers','REGGAE'),
-    (2,'Face Eater', 'METAL');
+    (1,'Meshuggah','METAL'),
+    (2,'Bob Marley & The Wailers','REGGAE'),
+    (3,'Thirty Seconds to Mars','ROCK'),
+    (4,'Ricky Gervais','COMEDY'),
+    (5,'Johnny Depp','ROCK'),
+    (6,'Jamie Fox','POP'),
+    (7,'Flea','ROCK'),
+    (8,'Red Hot Chili Peppers','ROCK');
 
-INSERT INTO song (song_id, song_title, song_length, artist_id, song_genre)
+INSERT INTO song (song_id, song_title, song_length_in_seconds, artist_id, song_genre)
 VALUES
-    (1,'Red Eye Jedi',300,1,'REGGAE'),
-    (2, 'How High?',300,1,'REGGAE'),
-    (3,'Miss. Mary Jane',300,1,'REGGAE'),
+    (1,'Combustion',248,1,'METAL'),
+    (2,'Electric Red',351,1,'METAL'),
+    (3,'Bleed',442,1,'METAL'),
 
-    (4,'Hail Satan',666,2,'METAL'),
-    (5,'Forbidden Fruit',666,2,'METAL'),
-    (6,'The Beast System',666,2,'METAL');
+    (4,'Easy Skanking',178,2,'REGGAE'),
+    (5,'Kaya',195,2,'REGGAE'),
+    (6,'Is This Love',232,2,'REGGAE'),
+
+    (7,'Escape',143,3,'ROCK'),
+    (8,'Night Of The Hunter',340,3,'ROCK'),
+    (9,'Kings And Queens',347,3,'ROCK'),
+
+    (10,'Average Sized Penis', 325,4,'COMEDY');
 
 INSERT INTO album (album_id, album_title, album_length, album_year, tracks, artist_id)
 VALUES
-    (1,'Praise Jah',900,0420,3,1),
-    (2,'The Devil''s Greatest Trick',1998,2020,3,2);
+    (1,'Obzen',1041,2008,3,1),
+    (2,'Kaya',605,1978,3,2),
+    (3,'This Is War',830,2009,3,3),
+    (4,'Legend - The Best Of Bob Marley And The Wailers',4320,2002,16,2);
 
 INSERT INTO album_song (album_id, song_id)
 VALUES
@@ -26,7 +40,11 @@ VALUES
 
     (2,4),
     (2,5),
-    (2,6);
+    (2,6),
+
+    (3,7),
+    (3,8),
+    (3,9);
 
 INSERT INTO app_user (user_id, username)
 VALUES
