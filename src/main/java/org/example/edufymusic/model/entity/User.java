@@ -1,3 +1,4 @@
+/*
 package org.example.edufymusic.model.entity;
 
 import jakarta.persistence.*;
@@ -31,3 +32,4 @@ public class User {
     }
 
 }
+*/

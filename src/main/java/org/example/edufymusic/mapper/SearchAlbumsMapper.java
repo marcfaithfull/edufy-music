@@ -12,7 +12,9 @@ public class SearchAlbumsMapper {
 
     public AlbumDto toDto(Album album) {
         AlbumDto dto = new AlbumDto();
-        dto.setUrl("Https://stream.edufy.com/album/" + album.getId());
+        dto.setUrl("Https://stream.edufy.com/album/" +
+                album.getId() + "/" +
+                album.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
         dto.setLength(album.getLength());

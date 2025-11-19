@@ -1,6 +1,7 @@
 package org.example.edufymusic.mapper;
 
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
+import org.example.edufymusic.model.dto.ArtistDto;
 import org.example.edufymusic.model.dto.SongDto;
 import org.example.edufymusic.model.entity.Album;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,12 @@ public class AlbumSongMapper {
 
     public AlbumArtistSongDto toDto(Album album) {
         AlbumArtistSongDto dto = new AlbumArtistSongDto();
-        dto.setUrl("https://streaming.edufy.com/albums");
+        dto.setUrl("https://streaming.edufy.com/album/" +
+                album.getId() + "/" +
+                album.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
-        dto.setArtist(album.getArtist());
+
         Set<SongDto> songDtos = album.getSongs().stream()
                 .map(songMapper::songToDto)
                 .collect(Collectors.toSet());
@@ -34,11 +37,11 @@ public class AlbumSongMapper {
     }
 
     public List<AlbumArtistSongDto> listToDto(List<Album> albums) {
-        List<AlbumArtistSongDto> dTos = new ArrayList<>();
+        List<AlbumArtistSongDto> dtos = new ArrayList<>();
         for (Album album : albums) {
             AlbumArtistSongDto dto = toDto(album);
-            dTos.add(dto);
+            dtos.add(dto);
         }
-        return dTos;
+        return dtos;
     }
 }

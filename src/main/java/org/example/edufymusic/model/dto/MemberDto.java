@@ -1,20 +1,10 @@
 package org.example.edufymusic.model.dto;
 
-import org.example.edufymusic.model.enumeration.Genre;
+public class MemberDto {
 
-public class ArtistDto {
     private Long id;
     private String name;
     private String url;
-    private Genre genre;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public Long getId() {
         return id;
@@ -32,11 +22,11 @@ public class ArtistDto {
         this.name = name;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public String getUrl() {
+        return url;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

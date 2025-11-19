@@ -1,22 +1,21 @@
 package org.example.edufymusic.service;
 
-import org.example.edufymusic.model.dto.ArtistDto;
 import org.example.edufymusic.model.entity.Artist;
 
 import java.util.List;
 
 public interface ArtistService {
 
-    Artist createArtist(ArtistDto artistDto);
+    Artist createArtist(org.example.edufymusic.model.dto.ArtistDto artistDto);
 
-    ArtistDto getArtistById(Long id);
+    org.example.edufymusic.model.dto.ArtistDto getArtistById(Long id);
 
-    void updateArtist(Long id, ArtistDto artistDto);
+    void updateArtist(Long id, org.example.edufymusic.model.dto.ArtistDto artistDto);
 
     Artist deleteArtistById(Long id);
 
-    List<ArtistDto> getAllArtists();
+    List<org.example.edufymusic.model.dto.ArtistDto> getAllArtists();
 
-    List<ArtistDto> searchResults(ArtistDto search);
+    List<org.example.edufymusic.model.dto.ArtistDto> searchResults(org.example.edufymusic.model.dto.ArtistDto search);
 
 }

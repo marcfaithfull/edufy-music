@@ -3,7 +3,6 @@ package org.example.edufymusic.service;
 import org.example.edufymusic.exception.RequestNotValidException;
 import org.example.edufymusic.exception.ResourceNotFoundException;
 import org.example.edufymusic.mapper.ArtistMapper;
-import org.example.edufymusic.model.dto.ArtistDto;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import java.util.List;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
-    ArtistRepository artistRepository;
-    ArtistMapper artistMapper;
+    private final ArtistRepository artistRepository;
+    private final ArtistMapper artistMapper;
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository, ArtistMapper artistMapper) {
@@ -26,7 +25,7 @@ public class ArtistServiceImpl implements ArtistService {
     // CRUD
 
     @Override
-    public Artist createArtist(ArtistDto artistDto) {
+    public Artist createArtist(org.example.edufymusic.model.dto.ArtistDto artistDto) {
         if (artistDto.getName() == null || artistDto.getName().isBlank()) {
             throw new RequestNotValidException("\"title\" is required");
         }
@@ -38,14 +37,14 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public ArtistDto getArtistById(Long id) {
+    public org.example.edufymusic.model.dto.ArtistDto getArtistById(Long id) {
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
         return artistMapper.toDto(artist);
     }
 
     @Override
-    public void updateArtist(Long id, ArtistDto artistDto) {
+    public void updateArtist(Long id, org.example.edufymusic.model.dto.ArtistDto artistDto) {
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
         artist.setName(artistDto.getName());
@@ -63,13 +62,13 @@ public class ArtistServiceImpl implements ArtistService {
     // OTHER ENDPOINTS
 
     @Override
-    public List<ArtistDto> getAllArtists() {
+    public List<org.example.edufymusic.model.dto.ArtistDto> getAllArtists() {
         List<Artist> artists = artistRepository.findAll();
         return artistMapper.listToDto(artists);
     }
 
     @Override
-    public List<ArtistDto> searchResults(ArtistDto search) {
+    public List<org.example.edufymusic.model.dto.ArtistDto> searchResults(org.example.edufymusic.model.dto.ArtistDto search) {
         List<Artist> artists = artistRepository.findAll();
         List<Artist> filteredArtists = new ArrayList<>();
         for (Artist artist : artists) {

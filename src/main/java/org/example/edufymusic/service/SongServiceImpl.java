@@ -17,10 +17,10 @@ import java.util.*;
 
 @Service
 public class SongServiceImpl implements SongService {
-    SongRepository songRepository;
-    SongAlbumArtistMapper songAlbumArtistMapper;
-    ArtistRepository artistRepository;
-    AlbumRepository albumRepository;
+    private final SongRepository songRepository;
+    private final SongAlbumArtistMapper songAlbumArtistMapper;
+    private final ArtistRepository artistRepository;
+    private final AlbumRepository albumRepository;
 
     @Autowired
     public SongServiceImpl(SongRepository songRepository,
