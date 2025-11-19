@@ -9,5 +9,6 @@ public enum Genre {
     CLASSICAL,
     PUNK,
     REGGAE,
-    COMEDY
+    COMEDY,
+    GRUNGE
 }

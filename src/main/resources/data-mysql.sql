@@ -7,7 +7,29 @@ VALUES
     (5,'Johnny Depp','ROCK'),
     (6,'Jamie Fox','POP'),
     (7,'Flea','ROCK'),
-    (8,'Red Hot Chili Peppers','ROCK');
+    (8,'Red Hot Chili Peppers','ROCK'),
+    (9,'Nirvana','GRUNGE'),
+    (10,'Queens Of The Stone Age', 'ROCK');
+
+INSERT INTO member (member_id, member_name)
+VALUES
+    (1,'Flea'),
+    (2,'Ricky Gervais'),
+    (3,'Jared Leto'),
+    (4,'Jamie Fox'),
+    (5,'Johnny Depp'),
+    (6,'Dave Grohl');
+
+INSERT INTO artist_member (artist_id, member_id)
+VALUES
+    (8,1),
+    (7,1),
+    (3,3),
+    (4,2),
+    (6,4),
+    (5,5),
+    (9,6),
+    (10,6);
 
 INSERT INTO song (song_id, song_title, song_length_in_seconds, artist_id, song_genre)
 VALUES
@@ -44,14 +66,17 @@ VALUES
 
     (3,7),
     (3,8),
-    (3,9);
+    (3,9),
+
+    (4,6);
 
 INSERT INTO app_user (user_id, username)
 VALUES
     (1,'Kurt'),
     (2,'Dave');
 
-ALTER TABLE artist ALTER COLUMN artist_id RESTART WITH 100;
-ALTER TABLE song ALTER COLUMN song_id RESTART WITH 100;
-ALTER TABLE album ALTER COLUMN album_id RESTART WITH 100;
-ALTER TABLE app_user ALTER COLUMN user_id RESTART WITH 100;
+ALTER TABLE artist AUTO_INCREMENT = 100;
+ALTER TABLE song AUTO_INCREMENT = 100;
+ALTER TABLE album AUTO_INCREMENT = 100;
+ALTER TABLE app_user AUTO_INCREMENT = 100;
+ALTER TABLE member AUTO_INCREMENT = 100;

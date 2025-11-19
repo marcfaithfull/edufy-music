@@ -8,7 +8,7 @@ public class AlbumArtistSongDto {
     String url;
     Long id;
     String title;
-    Artist artist;
+    ArtistDto artistDto;
     Set<SongDto> songs;
 
     public String getUrl() {
@@ -35,12 +35,12 @@ public class AlbumArtistSongDto {
         this.title = title;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public ArtistDto getArtistDto() {
+        return artistDto;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setArtistDto(ArtistDto artistDto) {
+        this.artistDto = artistDto;
     }
 
     public Set<SongDto> getSongs() {

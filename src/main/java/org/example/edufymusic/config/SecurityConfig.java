@@ -17,11 +17,11 @@ import java.util.Arrays;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)
+//@EnableWebSecurity
+//@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("Courtney")
@@ -47,15 +47,16 @@ public class SecurityConfig {
                         user1,
                         user2
                 ));
-    }
+    }*/
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/**").authenticated()
+                        /*.requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/**").authenticated()*/
+                        .requestMatchers("/**").permitAll()
                 )
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")

@@ -31,6 +31,14 @@ public class Artist {
     @OneToMany(mappedBy = "artist", cascade = CascadeType.REMOVE)
     private Set<Song> songs = new HashSet<>();
 
+    @ManyToMany()
+    @JoinTable(
+            name = "artist_member",
+            joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private Set<Member> members;
+
     public Long getId() {
         return id;
     }
@@ -69,5 +77,13 @@ public class Artist {
 
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
     }
 }

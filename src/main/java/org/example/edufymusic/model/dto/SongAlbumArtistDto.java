@@ -13,7 +13,7 @@ public class SongAlbumArtistDto {
     private int lengthInSeconds;
     private Genre genre;
     private Set<Album> albums;
-    private Artist artist;
+    private ArtistDto artistDto;
 
     public String getUrl() {
         return url;
@@ -55,12 +55,12 @@ public class SongAlbumArtistDto {
         this.albums = albums;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public ArtistDto getArtistDto() {
+        return artistDto;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setArtistDto(ArtistDto artistDto) {
+        this.artistDto = artistDto;
     }
 
     public Genre getGenre() {

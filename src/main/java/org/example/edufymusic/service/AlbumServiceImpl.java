@@ -23,11 +23,11 @@ import java.util.Set;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
-    AlbumRepository albumRepository;
-    ArtistRepository artistRepository;
-    SongRepository songRepository;
-    AlbumSongMapper albumSongMapper;
-    SearchAlbumsMapper searchAlbumsMapper;
+    private final AlbumRepository albumRepository;
+    private final ArtistRepository artistRepository;
+    private final SongRepository songRepository;
+    private final AlbumSongMapper albumSongMapper;
+    private final SearchAlbumsMapper searchAlbumsMapper;
 
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository, ArtistRepository artistRepository, SongRepository songRepository,

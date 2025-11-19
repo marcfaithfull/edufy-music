@@ -12,7 +12,9 @@ public class SongMapper {
 
     public SongDto songToDto(Song song) {
         SongDto dto = new SongDto();
-        dto.setUrl("https://stream.edufy.com/song/" + song.getId());
+        dto.setUrl("https://stream.edufy.com/song/" +
+                song.getId() + "/" +
+                song.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
         dto.setLength(song.getLengthInSeconds());

@@ -27,7 +27,7 @@ public class AlbumController {
 
     // CRUD
 
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     @PostMapping("/create/album")
     public ResponseEntity<Map<String, Object>> createAlbum(@RequestBody PostAlbumDto postAlbumDto) {
         Album album = albumService.createAlbum(postAlbumDto);
@@ -38,13 +38,13 @@ public class AlbumController {
         ));
     }
 
-    @Secured("ROLE_USER")
+    //@Secured("ROLE_USER")
     @GetMapping("/album/{id}")
     public ResponseEntity<AlbumArtistSongDto> getAlbumById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(albumService.getAlbumById(id));
     }
 
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     @PutMapping("/update/album/{id}")
     public ResponseEntity<Map<String, Object>> updateAlbum(@PathVariable Long id, @RequestBody PostAlbumDto postAlbumDto) {
         albumService.updateAlbum(id, postAlbumDto);
@@ -55,7 +55,7 @@ public class AlbumController {
         ));
     }
 
-    @Secured("ROLE_ADMIN")
+    //@Secured("ROLE_ADMIN")
     @DeleteMapping("/delete/album/{id}")
     public ResponseEntity<Map<String, Object>> deleteAlbum(@PathVariable Long id) {
         Album album = albumService.deleteAlbumById(id);
@@ -68,13 +68,13 @@ public class AlbumController {
 
     // OTHER ENDPOINTS
 
-    @Secured("ROLE_USER")
+    //@Secured("ROLE_USER")
     @GetMapping("/albums")
     public ResponseEntity<List<AlbumArtistSongDto>> getAllAlbums() {
         return ResponseEntity.status(HttpStatus.OK).body(albumService.getAllAlbums());
     }
 
-    @Secured("ROLE_USER")
+    //@Secured("ROLE_USER")
     @PostMapping("/search/album")
     public ResponseEntity<List<AlbumDto>> searchAlbum(@RequestBody AlbumDto search) {
         List<AlbumDto> searchResults = albumService.searchResults(search);
