@@ -133,7 +133,7 @@ public class SongServiceImpl implements SongService {
             for (Song songLength : songs) {
                 totalLength += songLength.getLengthInSeconds();
             }
-            album.setLength(totalLength);
+            album.setLengthInSeconds(totalLength);
         }
 
         songRepository.deleteById(id);

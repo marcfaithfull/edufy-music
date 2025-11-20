@@ -17,9 +17,10 @@ public class SongAlbumArtistMapper {
                 song.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
-        dto.setLength(song.getLengthInSeconds());
+        dto.setLengthInSeconds(song.getLengthInSeconds());
         dto.setGenre(song.getGenre());
         dto.setAlbums(song.getAlbums());
+        dto.setArtist(song.getArtist());
         return dto;
     }
 

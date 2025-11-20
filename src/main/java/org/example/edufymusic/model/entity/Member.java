@@ -40,5 +40,6 @@ public class Member {
     public List<Artist> getArtists() {
         return artists;
     }
+
     public void setArtists(List<Artist> artists) {}
 }

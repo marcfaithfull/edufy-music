@@ -1,79 +1,77 @@
 INSERT INTO artist (artist_id, artist_name, artist_genre)
-VALUES
-    (1,'Meshuggah','METAL'),
-    (2,'Bob Marley & The Wailers','REGGAE'),
-    (3,'Thirty Seconds to Mars','ROCK'),
-    (4,'Ricky Gervais','COMEDY'),
-    (5,'Johnny Depp','ROCK'),
-    (6,'Jamie Fox','POP'),
-    (7,'Flea','ROCK'),
-    (8,'Red Hot Chili Peppers','ROCK'),
-    (9,'Nirvana','GRUNGE'),
-    (10,'Queens Of The Stone Age', 'ROCK');
+VALUES (1, 'Meshuggah', 'METAL'),
+       (2, 'Bob Marley & The Wailers', 'REGGAE'),
+       (3, 'Thirty Seconds to Mars', 'ROCK'),
+       (4, 'Ricky Gervais', 'COMEDY'),
+       (5, 'Johnny Depp', 'ROCK'),
+       (6, 'Jamie Fox', 'POP'),
+       (7, 'Flea', 'ROCK'),
+       (8, 'Red Hot Chili Peppers', 'ROCK'),
+       (9, 'Nirvana', 'GRUNGE'),
+       (10, 'Queens Of The Stone Age', 'ROCK'),
+       (11, 'Rival Sons', 'ROCK');
 
 INSERT INTO member (member_id, member_name)
-VALUES
-    (1,'Flea'),
-    (2,'Ricky Gervais'),
-    (3,'Jared Leto'),
-    (4,'Jamie Fox'),
-    (5,'Johnny Depp'),
-    (6,'Dave Grohl');
+VALUES (1, 'Flea'),
+       (2, 'Ricky Gervais'),
+       (3, 'Jared Leto'),
+       (4, 'Jamie Fox'),
+       (5, 'Johnny Depp'),
+       (6, 'Dave Grohl'),
+       (7, 'Jens Kidman'),
+       (8, 'Bob Marley'),
+       (9, 'Jay Buchanan');
 
 INSERT INTO artist_member (artist_id, member_id)
-VALUES
-    (8,1),
-    (7,1),
-    (3,3),
-    (4,2),
-    (6,4),
-    (5,5),
-    (9,6),
-    (10,6);
+VALUES (1, 7),
+       (2, 8),
+       (3, 3),
+       (4, 2),
+       (5, 5),
+       (6, 4),
+       (7, 1),
+       (8, 1),
+       (9, 6),
+       (10, 6),
+       (11, 9);
 
 INSERT INTO song (song_id, song_title, song_length_in_seconds, artist_id, song_genre)
-VALUES
-    (1,'Combustion',248,1,'METAL'),
-    (2,'Electric Red',351,1,'METAL'),
-    (3,'Bleed',442,1,'METAL'),
+VALUES (1, 'Combustion', 248, 1, 'METAL'),
+       (2, 'Electric Red', 351, 1, 'METAL'),
+       (3, 'Bleed', 442, 1, 'METAL'),
 
-    (4,'Easy Skanking',178,2,'REGGAE'),
-    (5,'Kaya',195,2,'REGGAE'),
-    (6,'Is This Love',232,2,'REGGAE'),
+       (4, 'Easy Skanking', 178, 2, 'REGGAE'),
+       (5, 'Kaya', 195, 2, 'REGGAE'),
+       (6, 'Is This Love', 232, 2, 'REGGAE'),
 
-    (7,'Escape',143,3,'ROCK'),
-    (8,'Night Of The Hunter',340,3,'ROCK'),
-    (9,'Kings And Queens',347,3,'ROCK'),
+       (7, 'Escape', 143, 3, 'ROCK'),
+       (8, 'Night Of The Hunter', 340, 3, 'ROCK'),
+       (9, 'Kings And Queens', 347, 3, 'ROCK'),
 
-    (10,'Average Sized Penis', 325,4,'COMEDY');
+       (10, 'Average Sized Penis', 325, 4, 'COMEDY'),
+
+       (11, 'Jordan', 300, 11, 'ROCK');
 
 INSERT INTO album (album_id, album_title, album_length, album_year, tracks, artist_id)
-VALUES
-    (1,'Obzen',1041,2008,3,1),
-    (2,'Kaya',605,1978,3,2),
-    (3,'This Is War',830,2009,3,3),
-    (4,'Legend - The Best Of Bob Marley And The Wailers',4320,2002,16,2);
+VALUES (1, 'Obzen', 1041, 2008, 3, 1),
+       (2, 'Kaya', 605, 1978, 3, 2),
+       (3, 'This Is War', 830, 2009, 3, 3),
+       (4, 'Legend - The Best Of Bob Marley And The Wailers', 4320, 2002, 16, 2);
 
 INSERT INTO album_song (album_id, song_id)
-VALUES
-    (1,1),
-    (1,2),
-    (1,3),
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
 
-    (2,4),
-    (2,5),
-    (2,6),
+       (2, 4),
+       (2, 5),
+       (2, 6),
 
-    (3,7),
-    (3,8),
-    (3,9),
+       (3, 7),
+       (3, 8),
+       (3, 9),
 
-    (4,6);
-
-INSERT INTO app_user (user_id, username)
-VALUES
-    (1,'Kurt'),
-    (2,'Dave');
+       (4, 6);
 
 ALTER TABLE artist AUTO_INCREMENT = 100;
 ALTER TABLE song AUTO_INCREMENT = 100;

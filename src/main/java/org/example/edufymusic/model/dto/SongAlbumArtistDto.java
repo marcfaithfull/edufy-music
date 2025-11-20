@@ -7,13 +7,13 @@ import org.example.edufymusic.model.enumeration.Genre;
 import java.util.Set;
 
 public class SongAlbumArtistDto {
-    private String url;
     private Long id;
     private String title;
+    private String url;
     private int lengthInSeconds;
     private Genre genre;
     private Set<Album> albums;
-    private ArtistDto artistDto;
+    private Artist artist;
 
     public String getUrl() {
         return url;
@@ -39,12 +39,12 @@ public class SongAlbumArtistDto {
         this.title = title;
     }
 
-    public int getLength() {
+    public int getLengthInSeconds() {
         return lengthInSeconds;
     }
 
-    public void setLength(int lengthInMinutes) {
-        this.lengthInSeconds = lengthInMinutes;
+    public void setLengthInSeconds(int lengthInSeconds) {
+        this.lengthInSeconds = lengthInSeconds;
     }
 
     public Set<Album> getAlbums() {
@@ -55,12 +55,12 @@ public class SongAlbumArtistDto {
         this.albums = albums;
     }
 
-    public ArtistDto getArtistDto() {
-        return artistDto;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistDto(ArtistDto artistDto) {
-        this.artistDto = artistDto;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public Genre getGenre() {
