@@ -5,11 +5,11 @@ import org.example.edufymusic.model.entity.Artist;
 import java.util.Set;
 
 public class AlbumArtistSongDto {
-    String url;
     Long id;
     String title;
-    ArtistDto artistDto;
-    Set<SongDto> songs;
+    String url;
+    Artist artist;
+    //Set<SongDto> songs;
 
     public String getUrl() {
         return url;
@@ -35,19 +35,19 @@ public class AlbumArtistSongDto {
         this.title = title;
     }
 
-    public ArtistDto getArtistDto() {
-        return artistDto;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistDto(ArtistDto artistDto) {
-        this.artistDto = artistDto;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
-    public Set<SongDto> getSongs() {
+    /*public Set<SongDto> getSongs() {
         return songs;
     }
 
     public void setSongs(Set<SongDto> songs) {
         this.songs = songs;
-    }
+    }*/
 }

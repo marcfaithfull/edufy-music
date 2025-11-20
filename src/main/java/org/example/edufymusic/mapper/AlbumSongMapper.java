@@ -29,10 +29,12 @@ public class AlbumSongMapper {
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
 
+        dto.setArtist(album.getArtist());
+
         Set<SongDto> songDtos = album.getSongs().stream()
                 .map(songMapper::songToDto)
                 .collect(Collectors.toSet());
-        dto.setSongs(songDtos);
+        //dto.setSongs(songDtos);
         return dto;
     }
 

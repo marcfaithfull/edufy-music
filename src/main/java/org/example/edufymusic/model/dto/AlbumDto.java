@@ -32,11 +32,11 @@ public class AlbumDto {
         this.title = title;
     }
 
-    public int getLength() {
+    public int getLengthInSeconds() {
         return lengthInSeconds;
     }
 
-    public void setLength(int lengthInMinutes) {
+    public void setLengthInSeconds(int lengthInMinutes) {
         this.lengthInSeconds = lengthInMinutes;
     }
 

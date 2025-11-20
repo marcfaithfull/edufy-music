@@ -1,6 +1,7 @@
 package org.example.edufymusic.controller;
 
 import org.example.edufymusic.mapper.ResponseMapper;
+import org.example.edufymusic.model.dto.ArtistDto;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,6 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
-    // CRUD
-
-    //@Secured("ROLE_ADMIN")
     @PostMapping("/create/artist")
     public ResponseEntity<Map<String, Object>> createArtist(@RequestBody org.example.edufymusic.model.dto.ArtistDto artistDto) {
         Artist artist = artistService.createArtist(artistDto);
@@ -34,13 +32,11 @@ public class ArtistController {
         ));
     }
 
-    //@Secured("ROLE_USER")
     @GetMapping("/artist/{id}")
     public ResponseEntity<org.example.edufymusic.model.dto.ArtistDto> getArtistById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.getArtistById(id));
     }
 
-    //@Secured("ROLE_ADMIN")
     @PutMapping("/update/artist/{id}")
     public ResponseEntity<Map<String, Object>> updateArtist(@PathVariable Long id, @RequestBody org.example.edufymusic.model.dto.ArtistDto artistDto) {
         artistService.updateArtist(id, artistDto);
@@ -51,7 +47,6 @@ public class ArtistController {
         ));
     }
 
-    //@Secured("ROLE_ADMIN")
     @DeleteMapping("/delete/artist/{id}")
     public ResponseEntity<Map<String, Object>> deleteArtist(@PathVariable Long id) {
         Artist artist = artistService.deleteArtistById(id);
@@ -62,17 +57,13 @@ public class ArtistController {
         ));
     }
 
-    // OTHER ENDPOINTS
-
-    //@Secured("ROLE_USER")
     @GetMapping("/artists")
-    public ResponseEntity<List<org.example.edufymusic.model.dto.ArtistDto>> getAllArtists() {
+    public ResponseEntity<List<ArtistDto>> getAllArtists() {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.getAllArtists());
     }
 
-    //@Secured("ROLE_USER")
     @PostMapping("/search/artist")
-    public ResponseEntity<List<org.example.edufymusic.model.dto.ArtistDto>> searchArtist(@RequestBody org.example.edufymusic.model.dto.ArtistDto search) {
+    public ResponseEntity<List<ArtistDto>> searchArtist(@RequestBody org.example.edufymusic.model.dto.ArtistDto search) {
         List<org.example.edufymusic.model.dto.ArtistDto> searchResults = artistService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);
     }

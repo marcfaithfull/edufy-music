@@ -39,8 +39,6 @@ public class AlbumServiceImpl implements AlbumService {
         this.searchAlbumsMapper = searchAlbumsMapper;
     }
 
-    // CRUD
-
     @Override
     public Album createAlbum(PostAlbumDto postAlbumDto) {
         if (postAlbumDto.getTitle() == null || postAlbumDto.getTitle().isBlank()) {
@@ -78,7 +76,7 @@ public class AlbumServiceImpl implements AlbumService {
             int length = song.getLengthInSeconds();
             totalLength = totalLength + (length);
         }
-        album.setLength(totalLength);
+        album.setLengthInSeconds(totalLength);
 
         albumRepository.save(album);
         return album;
@@ -127,7 +125,7 @@ public class AlbumServiceImpl implements AlbumService {
                 int length = song.getLengthInSeconds();
                 totalLength = totalLength + (length);
             }
-            album.setLength(totalLength);
+            album.setLengthInSeconds(totalLength);
 
             albumRepository.save(album);
         }
@@ -140,8 +138,6 @@ public class AlbumServiceImpl implements AlbumService {
         albumRepository.delete(album);
         return  album;
     }
-
-    // OTHER ENDPOINTS
 
     @Override
     public List<AlbumArtistSongDto> getAllAlbums() {

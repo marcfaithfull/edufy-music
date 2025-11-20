@@ -17,7 +17,7 @@ public class SearchAlbumsMapper {
                 album.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
-        dto.setLength(album.getLength());
+        dto.setLengthInSeconds(album.getLengthInSeconds());
         dto.setYear(album.getYear());
         dto.setTracks(album.getTracks());
         return dto;

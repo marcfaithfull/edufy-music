@@ -22,8 +22,6 @@ public class ArtistServiceImpl implements ArtistService {
         this.artistMapper = artistMapper;
     }
 
-    // CRUD
-
     @Override
     public Artist createArtist(org.example.edufymusic.model.dto.ArtistDto artistDto) {
         if (artistDto.getName() == null || artistDto.getName().isBlank()) {
@@ -58,8 +56,6 @@ public class ArtistServiceImpl implements ArtistService {
         artistRepository.deleteById(id);
         return artist;
     }
-
-    // OTHER ENDPOINTS
 
     @Override
     public List<org.example.edufymusic.model.dto.ArtistDto> getAllArtists() {
