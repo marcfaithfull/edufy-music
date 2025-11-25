@@ -39,7 +39,7 @@ public class SongServiceImpl implements SongService {
             throw new RequestNotValidException("title is required");
         }
         if (postSongDto.getLengthInSeconds() == 0) {
-            throw new RequestNotValidException("length is required");
+            throw new RequestNotValidException("lengthInSeconds is required");
         }
         if (postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0) {
             throw new RequestNotValidException("artistId is required");
@@ -48,13 +48,13 @@ public class SongServiceImpl implements SongService {
             throw new RequestNotValidException("genre is required");
         }
         Artist artist = artistRepository.findById(postSongDto.getArtistId())
-                .orElseThrow(() -> new ResourceNotFoundException("Artist with " + postSongDto.getArtistId() + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artist with id: " + postSongDto.getArtistId() + " not found"));
 
         Set<Album> albums = new HashSet<>();
         Long albumId = postSongDto.getAlbumId();
         if (albumId != null && !albumId.equals(0L)) {
             Album album = albumRepository.findById(postSongDto.getAlbumId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with id: " + postSongDto.getAlbumId() + " not found"));
             albums.add(album);
         }
 
@@ -79,6 +79,7 @@ public class SongServiceImpl implements SongService {
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
         return songAlbumArtistMapper.toDto(song);
     }
+
 
     @Override
     public void updateSong(Long id, PostSongDto postSongDto) {
