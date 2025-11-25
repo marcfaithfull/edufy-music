@@ -33,11 +33,11 @@ public class SongDto {
         this.title = title;
     }
 
-    public int getLength() {
+    public int getLengthInSeconds() {
         return lengthInSeconds;
     }
 
-    public void setLength(int lengthInSeconds) {
+    public void setLengthInSeconds(int lengthInSeconds) {
         this.lengthInSeconds = lengthInSeconds;
     }
 

@@ -32,13 +32,13 @@ public class MemberController {
         ));
     }
 
-    @PostMapping("/search/member")
+    @GetMapping("/search/member")
     public ResponseEntity<List<MemberDto>> searchMember(@RequestBody MemberDto search) {
         List<MemberDto> searchResults = memberService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);
     }
 
-    @PostMapping("/advanced/search/member")
+    @GetMapping("/advanced/search/member")
     public ResponseEntity<List<MemberArtistDto>> advancedSearchMember(@RequestBody MemberArtistDto search) {
         List<MemberArtistDto> searchResults = memberService.advancedSearchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);

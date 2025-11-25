@@ -1,7 +1,6 @@
 package org.example.edufymusic.mapper;
 
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
-import org.example.edufymusic.model.dto.ArtistDto;
 import org.example.edufymusic.model.dto.SongDto;
 import org.example.edufymusic.model.entity.Album;
 import org.springframework.beans.factory.annotation.Autowired;

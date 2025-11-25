@@ -17,7 +17,7 @@ public class SongMapper {
                 song.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(song.getId());
         dto.setTitle(song.getTitle());
-        dto.setLength(song.getLengthInSeconds());
+        dto.setLengthInSeconds(song.getLengthInSeconds());
         dto.setGenre(song.getGenre());
         return dto;
     }

@@ -78,7 +78,7 @@ public class SongController {
         ));
     }
 
-    @PostMapping("/search/song")
+    @GetMapping("/search/song")
     public ResponseEntity<List<SongAlbumArtistDto>> searchSong(@RequestBody SongAlbumArtistDto search) {
         List<SongAlbumArtistDto> searchResults = songService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);

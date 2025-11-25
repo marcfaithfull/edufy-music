@@ -62,7 +62,7 @@ public class ArtistController {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.getAllArtists());
     }
 
-    @PostMapping("/search/artist")
+    @GetMapping("/search/artist")
     public ResponseEntity<List<ArtistDto>> searchArtist(@RequestBody org.example.edufymusic.model.dto.ArtistDto search) {
         List<org.example.edufymusic.model.dto.ArtistDto> searchResults = artistService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);

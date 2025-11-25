@@ -32,8 +32,6 @@ public class SongServiceImpl implements SongService {
         this.albumRepository = albumRepository;
     }
 
-    // CRUD
-
     @Override
     @Transactional
     public Song createSong(PostSongDto postSongDto) {
@@ -139,8 +137,6 @@ public class SongServiceImpl implements SongService {
         songRepository.deleteById(id);
         return song;
     }
-
-    // OTHER ENDPOINTS
 
     @Override
     public List<SongAlbumArtistDto> getAllSongs() {
