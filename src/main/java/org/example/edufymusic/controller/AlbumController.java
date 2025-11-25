@@ -64,7 +64,7 @@ public class AlbumController {
         return ResponseEntity.status(HttpStatus.OK).body(albumService.getAllAlbums());
     }
 
-    @PostMapping("/search/album")
+    @GetMapping("/search/album")
     public ResponseEntity<List<AlbumDto>> searchAlbum(@RequestBody AlbumDto search) {
         List<AlbumDto> searchResults = albumService.searchResults(search);
         return ResponseEntity.status(HttpStatus.OK).body(searchResults);
