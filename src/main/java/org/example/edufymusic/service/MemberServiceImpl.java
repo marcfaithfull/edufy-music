@@ -54,7 +54,6 @@ public class MemberServiceImpl implements MemberService {
                 filteredMembers.add(member);
             }
         }
-        System.out.println(members);
         return memberArtistMapper.listToDto(filteredMembers);
     }
 
