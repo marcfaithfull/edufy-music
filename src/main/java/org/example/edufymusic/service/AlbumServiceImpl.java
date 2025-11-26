@@ -136,7 +136,7 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new RequestNotValidException("Album Not Found"));
         albumRepository.delete(album);
-        return  album;
+        return album;
     }
 
     @Override

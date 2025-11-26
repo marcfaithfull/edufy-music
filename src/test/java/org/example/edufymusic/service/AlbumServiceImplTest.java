@@ -3,7 +3,9 @@ package org.example.edufymusic.service;
 import org.example.edufymusic.exception.RequestNotValidException;
 import org.example.edufymusic.exception.ResourceNotFoundException;
 import org.example.edufymusic.mapper.AlbumSongMapper;
+import org.example.edufymusic.mapper.SearchAlbumsMapper;
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
+import org.example.edufymusic.model.dto.AlbumDto;
 import org.example.edufymusic.model.dto.PostAlbumDto;
 import org.example.edufymusic.model.entity.Album;
 import org.example.edufymusic.model.entity.Artist;
@@ -18,9 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -35,11 +35,15 @@ class AlbumServiceImplTest {
     private ArtistRepository artistRepository;
     @Mock
     private AlbumSongMapper albumSongMapper;
+    @Mock
+    private SearchAlbumsMapper searchAlbumsMapper;
     @InjectMocks
     AlbumServiceImpl albumServiceImpl;
 
     private PostAlbumDto postAlbumDto;
     private AlbumArtistSongDto albumArtistSongDto;
+    private AlbumDto albumDto;
+
     private Song song;
     private Album album;
     private Artist artist;
@@ -48,6 +52,7 @@ class AlbumServiceImplTest {
     void setUp() {
         postAlbumDto = new PostAlbumDto();
         albumArtistSongDto = new AlbumArtistSongDto();
+        albumDto = new AlbumDto();
 
         song = new Song();
         song.setId(1L);
@@ -163,4 +168,91 @@ class AlbumServiceImplTest {
         verify(albumRepository, times(1)).findByIdWithSongs(1L);
         verify(albumSongMapper, times(1)).toDto(album);
     }
+
+    @Test
+    void updateAlbum_Success() {
+        song.setId(1L);
+        song.setTitle("Test Song");
+        song.setAlbums(new HashSet<>());
+
+        Set<Song> songs = new HashSet<>();
+        songs.add(song);
+
+        album.setId(1L);
+        album.setTitle("Old Title");
+        album.setSongs(songs);
+
+        artist.setId(1L);
+        artist.setName("Test Artist");
+
+        postAlbumDto.setArtistId(1L);
+        postAlbumDto.setTitle("New Title");
+        postAlbumDto.setSongs(Set.of(1L));
+
+        when(albumRepository.findById(1L)).thenReturn(Optional.of(album));
+        when(artistRepository.findById(1L)).thenReturn(Optional.of(artist));
+        when(songRepository.findById(1L)).thenReturn(Optional.of(song));
+
+        albumServiceImpl.updateAlbum(1L, postAlbumDto);
+
+        assertEquals("New Title", album.getTitle());
+        assertEquals(artist, album.getArtist());
+        assertTrue(album.getSongs().contains(song));
+        assertEquals(1, album.getSongs().size());
+
+        verify(albumRepository).save(album);
+    }
+
+    @Test
+    void deleteAlbum_Success() {
+        album.setId(1L);
+
+        when(albumRepository.findById(1L)).thenReturn(Optional.of(album));
+
+        albumServiceImpl.deleteAlbumById(1L);
+
+        verify(albumRepository).delete(album);
+    }
+
+    @Test
+    void getAllAlbums_Success() {
+        album.setId(1L);
+        List<Album> albums = new ArrayList<>();
+        albums.add(album);
+
+        albumArtistSongDto.setId(1L);
+
+        when(albumRepository.findAll()).thenReturn(albums);
+
+        albumServiceImpl.getAllAlbums();
+
+        verify(albumRepository, times(1)).findAll();
+    }
+
+    @Test
+    void searchResults_Success() {
+        album.setId(1L);
+        album.setTitle("Test Album");
+        List<Album> albums = Collections.singletonList(album);
+
+        albumDto.setId(1L);
+        albumDto.setTitle("Test Album");
+
+        when(albumRepository.findAll()).thenReturn(albums);
+
+        AlbumDto search = new AlbumDto();
+        search.setTitle("test");
+
+        when(searchAlbumsMapper.listToDto(List.of(album))).thenReturn(List.of(albumDto));
+
+        List<AlbumDto> result = albumServiceImpl.searchResults(search);
+
+        assertEquals(1, result.size());
+        assertEquals("Test Album", result.get(0).getTitle());
+
+        verify(albumRepository).findAll();
+        verify(searchAlbumsMapper).listToDto(List.of(album));
+    }
+
+
 }
