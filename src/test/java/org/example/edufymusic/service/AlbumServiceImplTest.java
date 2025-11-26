@@ -51,8 +51,15 @@ class AlbumServiceImplTest {
     @BeforeEach
     void setUp() {
         postAlbumDto = new PostAlbumDto();
+        postAlbumDto.setId(1L);
+
         albumArtistSongDto = new AlbumArtistSongDto();
+        albumArtistSongDto.setId(1L);
+        albumArtistSongDto.setTitle("Test Album");
+
         albumDto = new AlbumDto();
+        albumDto.setId(1L);
+        albumDto.setTitle("Test Album");
 
         song = new Song();
         song.setId(1L);
@@ -72,7 +79,6 @@ class AlbumServiceImplTest {
         Set<Long> songs = new HashSet<>();
         songs.add(song.getId());
 
-        postAlbumDto.setId(1L);
         postAlbumDto.setTitle("Test Title");
         postAlbumDto.setYear(2025);
         postAlbumDto.setSongs(songs);
@@ -94,7 +100,6 @@ class AlbumServiceImplTest {
 
     @Test
     void createAlbum_Failed_MissingTitle() {
-        postAlbumDto.setId(1L);
         postAlbumDto.setArtistId(1L);
 
         Exception e = assertThrows(RequestNotValidException.class, () -> albumServiceImpl.createAlbum(postAlbumDto));
@@ -131,7 +136,6 @@ class AlbumServiceImplTest {
 
     @Test
     void createAlbum_Failed_SongNotFound() {
-        postAlbumDto.setId(1L);
         postAlbumDto.setTitle("Test Title");
         postAlbumDto.setArtistId(artist.getId());
 
@@ -153,8 +157,6 @@ class AlbumServiceImplTest {
 
     @Test
     void getAlbumById_Success() {
-        albumArtistSongDto.setId(1L);
-        albumArtistSongDto.setTitle("Test Album");
 
         when(albumRepository.findByIdWithSongs(1L)).thenReturn(Optional.of(album));
         when(albumSongMapper.toDto(album)).thenReturn(albumArtistSongDto);
@@ -171,19 +173,11 @@ class AlbumServiceImplTest {
 
     @Test
     void updateAlbum_Success() {
-        song.setId(1L);
-        song.setTitle("Test Song");
         song.setAlbums(new HashSet<>());
-
         Set<Song> songs = new HashSet<>();
         songs.add(song);
 
-        album.setId(1L);
-        album.setTitle("Old Title");
         album.setSongs(songs);
-
-        artist.setId(1L);
-        artist.setName("Test Artist");
 
         postAlbumDto.setArtistId(1L);
         postAlbumDto.setTitle("New Title");
@@ -205,8 +199,6 @@ class AlbumServiceImplTest {
 
     @Test
     void deleteAlbum_Success() {
-        album.setId(1L);
-
         when(albumRepository.findById(1L)).thenReturn(Optional.of(album));
 
         albumServiceImpl.deleteAlbumById(1L);
@@ -216,11 +208,8 @@ class AlbumServiceImplTest {
 
     @Test
     void getAllAlbums_Success() {
-        album.setId(1L);
         List<Album> albums = new ArrayList<>();
         albums.add(album);
-
-        albumArtistSongDto.setId(1L);
 
         when(albumRepository.findAll()).thenReturn(albums);
 
@@ -231,12 +220,7 @@ class AlbumServiceImplTest {
 
     @Test
     void searchResults_Success() {
-        album.setId(1L);
-        album.setTitle("Test Album");
         List<Album> albums = Collections.singletonList(album);
-
-        albumDto.setId(1L);
-        albumDto.setTitle("Test Album");
 
         when(albumRepository.findAll()).thenReturn(albums);
 
@@ -253,6 +237,4 @@ class AlbumServiceImplTest {
         verify(albumRepository).findAll();
         verify(searchAlbumsMapper).listToDto(List.of(album));
     }
-
-
 }
