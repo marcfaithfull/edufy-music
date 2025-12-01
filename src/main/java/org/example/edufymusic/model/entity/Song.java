@@ -3,6 +3,7 @@ package org.example.edufymusic.model.entity;
 import jakarta.persistence.*;
 import org.example.edufymusic.model.enumeration.Genre;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class Song {
 
     @ManyToMany(mappedBy = "songs")
     private Set<Album> albums = new HashSet<>();
+
+    @Column(name = "release_date")
+    @Temporal(TemporalType.DATE)
+    private Date releaseDate;
 
     public Song() {
     }
@@ -88,5 +93,13 @@ public class Song {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

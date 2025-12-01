@@ -4,6 +4,7 @@ import org.example.edufymusic.model.entity.Album;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.model.enumeration.Genre;
 
+import java.util.Date;
 import java.util.Set;
 
 public class SongAlbumArtistDto {
@@ -12,6 +13,7 @@ public class SongAlbumArtistDto {
     private String url;
     private int lengthInSeconds;
     private Genre genre;
+    private Date releaseDate;
     private Set<Album> albums;
     private Artist artist;
 
@@ -69,5 +71,13 @@ public class SongAlbumArtistDto {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
