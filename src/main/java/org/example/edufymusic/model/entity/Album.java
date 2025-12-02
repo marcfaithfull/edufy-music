@@ -3,7 +3,8 @@ package org.example.edufymusic.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "album")
@@ -26,14 +27,8 @@ public class Album {
     @Column(name = "tracks")
     private int tracks;
 
-    @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "album_song",
-            joinColumns = @JoinColumn(name = "album_id"),
-            inverseJoinColumns = @JoinColumn(name = "song_id")
-    )
-    private Set<Song> songs;
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AlbumSong> albumSongs = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne
@@ -80,12 +75,12 @@ public class Album {
         this.tracks = tracks;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    public List<AlbumSong> getAlbumSongs() {
+        return albumSongs;
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
+    public void setAlbumSongs(List<AlbumSong> albumSongs) {
+        this.albumSongs = albumSongs;
     }
 
     public Artist getArtist() {

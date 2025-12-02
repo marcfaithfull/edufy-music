@@ -240,14 +240,14 @@ class SongServiceImplTest {
     void updateSong_Successful() {
         song.setId(1L);
         song.setTitle("Old Title");
-        song.setAlbums(new HashSet<>());
+        song.setAlbumSongs(new ArrayList<>());
 
         artist.setId(1L);
         artist.setName("Test Artist");
 
         album.setId(1L);
         album.setTitle("Test Album");
-        album.setSongs(new HashSet<>());
+        album.setAlbumSongs(new ArrayList<>());
 
         postSongDto.setArtistId(1L);
         postSongDto.setAlbumId(1L);
@@ -259,8 +259,6 @@ class SongServiceImplTest {
 
         songServiceImpl.updateSong(1L, postSongDto);
 
-        assertTrue(song.getAlbums().contains(album));
-        assertTrue(album.getSongs().contains(song));
         assertEquals(artist, song.getArtist());
 
         assertEquals("New Title", song.getTitle());

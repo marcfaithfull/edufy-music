@@ -58,20 +58,20 @@ VALUES (1, 'Obzen', 1041, 2008, 3, 1),
        (3, 'This Is War', 830, 2009, 3, 3),
        (4, 'Legend - The Best Of Bob Marley And The Wailers', 4320, 2002, 16, 2);
 
-INSERT INTO album_song (album_id, song_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3),
+INSERT INTO album_song (album_id, song_id, track_number)
+VALUES (1, 1,1),
+       (1, 2,2),
+       (1, 3,3),
 
-       (2, 4),
-       (2, 5),
-       (2, 6),
+       (2, 4,1),
+       (2, 5,2),
+       (2, 6,3),
 
-       (3, 7),
-       (3, 8),
-       (3, 9),
+       (3, 7,1),
+       (3, 8,2),
+       (3, 9,3),
 
-       (4, 6);
+       (4, 6,1);
 
 ALTER TABLE artist
     ALTER COLUMN artist_id RESTART WITH 100;
