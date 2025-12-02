@@ -1,14 +1,13 @@
 package org.example.edufymusic.mapper;
 
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
-import org.example.edufymusic.model.dto.SongDto;
+import org.example.edufymusic.model.dto.TrackDto;
 import org.example.edufymusic.model.entity.Album;
+import org.example.edufymusic.model.entity.AlbumSong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +26,22 @@ public class AlbumSongMapper {
                 album.getTitle().replaceAll("\\s+", "-").toLowerCase());
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
-
         dto.setArtist(album.getArtist());
 
-        Set<SongDto> songDtos = album.getSongs().stream()
-                .map(songMapper::songToDto)
-                .collect(Collectors.toSet());
-        //dto.setSongs(songDtos);
+        List<TrackDto> tracks = album.getAlbumSongs().stream()
+                .sorted(Comparator.comparing(
+                        AlbumSong::getTrackNumber,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
+                .map(as -> {
+                    TrackDto trackDto = new TrackDto();
+                    trackDto.setTitle(as.getSong().getTitle());
+                    trackDto.setTrackNumber(as.getTrackNumber());
+                    trackDto.setSongId(as.getSong().getId());
+                    return trackDto;
+                })
+                .collect(Collectors.toList());
+        dto.setTracks(tracks);
+
         return dto;
     }
 

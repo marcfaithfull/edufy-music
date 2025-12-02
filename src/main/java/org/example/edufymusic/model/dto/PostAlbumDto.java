@@ -1,15 +1,13 @@
 package org.example.edufymusic.model.dto;
 
-import org.example.edufymusic.model.entity.Song;
-
-import java.util.Set;
+import java.util.List;
 
 public class PostAlbumDto {
     Long id;
     String title;
     Long artistId;
     int year;
-    Set<Long> songId;
+    private List<TrackDto> tracks;
 
     public Long getId() {
         return id;
@@ -43,12 +41,11 @@ public class PostAlbumDto {
         this.year = year;
     }
 
-    public Set<Long> getSongId() {
-        return songId;
+    public List<TrackDto> getTracks() {
+        return tracks;
     }
 
-    public Set<Song> setSongs(Set<Long> songId) {
-        this.songId = songId;
-        return null;
+    public void setTracks(List<TrackDto> tracks) {
+        this.tracks = tracks;
     }
 }

@@ -1,10 +1,9 @@
 package org.example.edufymusic.model.dto;
 
-import org.example.edufymusic.model.entity.Album;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.model.enumeration.Genre;
 
-import java.util.Set;
+import java.util.Date;
 
 public class SongAlbumArtistDto {
     private Long id;
@@ -12,7 +11,7 @@ public class SongAlbumArtistDto {
     private String url;
     private int lengthInSeconds;
     private Genre genre;
-    private Set<Album> albums;
+    private Date releaseDate;
     private Artist artist;
 
     public String getUrl() {
@@ -47,14 +46,6 @@ public class SongAlbumArtistDto {
         this.lengthInSeconds = lengthInSeconds;
     }
 
-    public Set<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Set<Album> albums) {
-        this.albums = albums;
-    }
-
     public Artist getArtist() {
         return artist;
     }
@@ -69,5 +60,13 @@ public class SongAlbumArtistDto {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

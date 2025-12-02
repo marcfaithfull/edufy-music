@@ -7,6 +7,7 @@ import org.example.edufymusic.mapper.SearchAlbumsMapper;
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
 import org.example.edufymusic.model.dto.AlbumDto;
 import org.example.edufymusic.model.dto.PostAlbumDto;
+import org.example.edufymusic.model.dto.TrackDto;
 import org.example.edufymusic.model.entity.Album;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.model.entity.Song;
@@ -43,6 +44,7 @@ class AlbumServiceImplTest {
     private PostAlbumDto postAlbumDto;
     private AlbumArtistSongDto albumArtistSongDto;
     private AlbumDto albumDto;
+    private TrackDto trackDto;
 
     private Song song;
     private Album album;
@@ -65,6 +67,9 @@ class AlbumServiceImplTest {
         song.setId(1L);
         song.setTitle("Test Song");
 
+        trackDto = new TrackDto();
+        trackDto.setSongId(song.getId());
+
         album = new Album();
         album.setId(1L);
         album.setTitle("Test Album");
@@ -76,12 +81,12 @@ class AlbumServiceImplTest {
 
     @Test
     void createAlbum_Success() {
-        Set<Long> songs = new HashSet<>();
-        songs.add(song.getId());
+        List<TrackDto> trackDtoList = new ArrayList<>();
+        trackDtoList.add(trackDto);
 
         postAlbumDto.setTitle("Test Title");
         postAlbumDto.setYear(2025);
-        postAlbumDto.setSongs(songs);
+        postAlbumDto.setTracks(trackDtoList);
         postAlbumDto.setArtistId(artist.getId());
 
         when(artistRepository.findById(1L)).thenReturn(Optional.of(artist));
@@ -94,8 +99,6 @@ class AlbumServiceImplTest {
         assertEquals(artist, album.getArtist());
 
         verify(albumRepository, times(1)).save(album);
-
-        assertTrue(song.getAlbums().contains(album));
     }
 
     @Test
@@ -139,10 +142,10 @@ class AlbumServiceImplTest {
         postAlbumDto.setTitle("Test Title");
         postAlbumDto.setArtistId(artist.getId());
 
-        Set<Long> songs = new HashSet<>();
-        songs.add(song.getId());
+        List<TrackDto> trackDtoList = new ArrayList<>();
+        trackDtoList.add(trackDto);
 
-        postAlbumDto.setSongs(songs);
+        postAlbumDto.setTracks(trackDtoList);
 
         when(artistRepository.findById(1L)).thenReturn(Optional.of(artist));
         when(songRepository.findById(1L)).thenReturn(Optional.empty());
@@ -158,7 +161,7 @@ class AlbumServiceImplTest {
     @Test
     void getAlbumById_Success() {
 
-        when(albumRepository.findByIdWithSongs(1L)).thenReturn(Optional.of(album));
+        when(albumRepository.findById(1L)).thenReturn(Optional.of(album));
         when(albumSongMapper.toDto(album)).thenReturn(albumArtistSongDto);
 
         AlbumArtistSongDto result = albumServiceImpl.getAlbumById(1L);
@@ -167,21 +170,19 @@ class AlbumServiceImplTest {
         assertEquals(1L, result.getId());
         assertEquals("Test Album", result.getTitle());
 
-        verify(albumRepository, times(1)).findByIdWithSongs(1L);
+        verify(albumRepository, times(1)).findById(1L);
         verify(albumSongMapper, times(1)).toDto(album);
     }
 
     @Test
     void updateAlbum_Success() {
-        song.setAlbums(new HashSet<>());
-        Set<Song> songs = new HashSet<>();
-        songs.add(song);
-
-        album.setSongs(songs);
+        song.setAlbumSongs(new ArrayList<>());
+        List<TrackDto> trackDtoList = new ArrayList<>();
+        trackDtoList.add(trackDto);
 
         postAlbumDto.setArtistId(1L);
         postAlbumDto.setTitle("New Title");
-        postAlbumDto.setSongs(Set.of(1L));
+        postAlbumDto.setTracks(trackDtoList);
 
         when(albumRepository.findById(1L)).thenReturn(Optional.of(album));
         when(artistRepository.findById(1L)).thenReturn(Optional.of(artist));
@@ -191,8 +192,7 @@ class AlbumServiceImplTest {
 
         assertEquals("New Title", album.getTitle());
         assertEquals(artist, album.getArtist());
-        assertTrue(album.getSongs().contains(song));
-        assertEquals(1, album.getSongs().size());
+        assertEquals(1, album.getAlbumSongs().size());
 
         verify(albumRepository).save(album);
     }

@@ -6,6 +6,7 @@ import org.example.edufymusic.mapper.SongAlbumArtistMapper;
 import org.example.edufymusic.model.dto.PostSongDto;
 import org.example.edufymusic.model.dto.SongAlbumArtistDto;
 import org.example.edufymusic.model.entity.Album;
+import org.example.edufymusic.model.entity.AlbumSong;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.model.entity.Song;
 import org.example.edufymusic.exception.ResourceNotFoundException;
@@ -50,23 +51,23 @@ public class SongServiceImpl implements SongService {
         Artist artist = artistRepository.findById(postSongDto.getArtistId())
                 .orElseThrow(() -> new ResourceNotFoundException("Artist with id: " + postSongDto.getArtistId() + " not found"));
 
-        Set<Album> albums = new HashSet<>();
-        Long albumId = postSongDto.getAlbumId();
-        if (albumId != null && !albumId.equals(0L)) {
-            Album album = albumRepository.findById(postSongDto.getAlbumId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Album with id: " + postSongDto.getAlbumId() + " not found"));
-            albums.add(album);
-        }
-
         Song song = new Song(
                 postSongDto.getTitle(),
                 postSongDto.getLengthInSeconds(),
                 artist,
                 postSongDto.getGenre());
 
-        for (Album album : albums) {
-            song.getAlbums().add(album);
-            album.getSongs().add(song);
+        Long albumId = postSongDto.getAlbumId();
+        if (albumId != null && !albumId.equals(0L)) {
+            Album album = albumRepository.findById(postSongDto.getAlbumId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Album with id: " + postSongDto.getAlbumId() + " not found"));
+
+            AlbumSong  albumSong = new AlbumSong();
+            albumSong.setAlbum(album);
+            albumSong.setSong(song);
+
+            album.getAlbumSongs().add(albumSong);
+            song.getAlbumSongs().add(albumSong);
         }
 
         songRepository.save(song);
@@ -85,34 +86,38 @@ public class SongServiceImpl implements SongService {
     public void updateSong(Long id, PostSongDto postSongDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
+
         if (!(postSongDto.getArtistId() == null || postSongDto.getArtistId() == 0)) {
             Artist artist = artistRepository.findById(postSongDto.getArtistId())
                     .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
             song.setArtist(artist);
         }
 
-        Set<Album> albums = new HashSet<>();
         Long albumId = postSongDto.getAlbumId();
         if (albumId != null && !albumId.equals(0L)) {
             Album album = albumRepository.findById(postSongDto.getAlbumId())
                     .orElseThrow(() -> new ResourceNotFoundException("Album with " + postSongDto.getAlbumId() + " not found"));
-            albums.add(album);
+
+            AlbumSong albumSong = new AlbumSong();
+            albumSong.setAlbum(album);
+            albumSong.setSong(song);
+
+            song.getAlbumSongs().add(albumSong);
+            album.getAlbumSongs().add(albumSong);
         }
 
-        for (Album album : albums) {
-            song.getAlbums().add(album);
-            album.getSongs().add(song);
-        }
-
-        if (!(song.getTitle() == null)) {
+        if (!(postSongDto.getTitle() == null)) {
             song.setTitle(postSongDto.getTitle());
         }
-        if (!(song.getLengthInSeconds() == 0)) {
+
+        if (!(postSongDto.getLengthInSeconds() == 0)) {
             song.setLengthInSeconds(postSongDto.getLengthInSeconds());
         }
+
         if (postSongDto.getGenre() != null) {
             song.setGenre(postSongDto.getGenre());
         }
+
         songRepository.save(song);
     }
 
@@ -122,16 +127,14 @@ public class SongServiceImpl implements SongService {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song Not Found"));
 
-        Set<Album> albums = song.getAlbums();
-        for (Album album : albums) {
-            album.getSongs().remove(song);
-            album.setTracks(album.getSongs().size());
-            Set<Song> songs = album.getSongs();
+        for (AlbumSong albumSong : song.getAlbumSongs()) {
+            Album album = albumSong.getAlbum();
+            album.getAlbumSongs().remove(albumSong);
+            album.setTracks(album.getAlbumSongs().size());
 
-            int totalLength = 0;
-            for (Song songLength : songs) {
-                totalLength += songLength.getLengthInSeconds();
-            }
+            int totalLength = album.getAlbumSongs().stream()
+                    .mapToInt(as -> as.getSong().getLengthInSeconds())
+                    .sum();
             album.setLengthInSeconds(totalLength);
         }
 

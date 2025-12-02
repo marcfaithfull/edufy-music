@@ -7,7 +7,9 @@ import org.example.edufymusic.mapper.SearchAlbumsMapper;
 import org.example.edufymusic.model.dto.AlbumDto;
 import org.example.edufymusic.model.dto.PostAlbumDto;
 import org.example.edufymusic.model.dto.AlbumArtistSongDto;
+import org.example.edufymusic.model.dto.TrackDto;
 import org.example.edufymusic.model.entity.Album;
+import org.example.edufymusic.model.entity.AlbumSong;
 import org.example.edufymusic.model.entity.Artist;
 import org.example.edufymusic.model.entity.Song;
 import org.example.edufymusic.repository.AlbumRepository;
@@ -17,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
@@ -55,27 +55,29 @@ public class AlbumServiceImpl implements AlbumService {
         album.setArtist(artist);
         album.setYear(postAlbumDto.getYear());
 
-        Set<Song> songs = new HashSet<>();
+        List<AlbumSong> albumSongs = new ArrayList<>();
 
-        if (postAlbumDto.getSongId() != null) {
-            for (Long songId : postAlbumDto.getSongId()) {
-                Song song = songRepository.findById(songId)
+        if (postAlbumDto.getTracks() != null) {
+            for (TrackDto trackDto : postAlbumDto.getTracks()) {
+                Song song = songRepository.findById(trackDto.getSongId())
                         .orElseThrow(() -> new ResourceNotFoundException("Song not found"));
-                songs.add(song);
-                song.getAlbums().add(album);
+
+                AlbumSong albumSong = new AlbumSong();
+                albumSong.setAlbum(album);
+                albumSong.setSong(song);
+                albumSong.setTrackNumber(trackDto.getTrackNumber());
+
+                albumSongs.add(albumSong);
             }
         }
-        album.setSongs(songs);
+        album.setAlbumSongs(albumSongs);
 
-        Set<Song> countSongs = album.getSongs();
-        int countedSongs = countSongs.size();
+        int countedSongs = albumSongs.size();
         album.setTracks(countedSongs);
 
-        int totalLength = 0;
-        for (Song song : countSongs) {
-            int length = song.getLengthInSeconds();
-            totalLength = totalLength + (length);
-        }
+        int totalLength = albumSongs.stream()
+                        .mapToInt(as -> as.getSong().getLengthInSeconds())
+                                .sum();
         album.setLengthInSeconds(totalLength);
 
         albumRepository.save(album);
@@ -84,7 +86,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public AlbumArtistSongDto getAlbumById(Long id) {
-        Album album = albumRepository.findByIdWithSongs(id)
+        Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new RequestNotValidException("Album Not Found"));
         return albumSongMapper.toDto(album);
     }
@@ -95,40 +97,40 @@ public class AlbumServiceImpl implements AlbumService {
                 .orElseThrow(() -> new RequestNotValidException("Album Not Found"));
         Artist artist = artistRepository.findById(postAlbumDto.getArtistId())
                 .orElseThrow(() -> new ResourceNotFoundException("Artist Not Found"));
-        if (postAlbumDto.getTitle() != null || postAlbumDto.getTitle().isBlank()) {
+        if (postAlbumDto.getTitle() != null && !postAlbumDto.getTitle().isBlank()) {
             album.setTitle(postAlbumDto.getTitle());
         }
-        if (postAlbumDto.getArtistId() != null || postAlbumDto.getArtistId().equals(0L)) {
+        if (postAlbumDto.getArtistId() != null && !postAlbumDto.getArtistId().equals(0L)) {
             album.setArtist(artist);
         }
 
-        if (postAlbumDto.getSongId() != null) {
-            for (Song oldSongs : album.getSongs()) {
-                oldSongs.getAlbums().remove(album);
-            }
-            album.getSongs().clear();
-            Set<Song> newSongs = new HashSet<>();
-            for (Long songId : postAlbumDto.getSongId()) {
-                Song song = songRepository.findById(songId)
+        if (postAlbumDto.getTracks() != null) {
+            album.getAlbumSongs().clear();
+
+            List<AlbumSong> newSongs = new ArrayList<>();
+            for (TrackDto trackDto : postAlbumDto.getTracks()) {
+                Song song = songRepository.findById(trackDto.getSongId())
                         .orElseThrow(() -> new ResourceNotFoundException("Song not found"));
-                newSongs.add(song);
-                song.getAlbums().add(album);
-            }
-            album.setSongs(newSongs);
 
-            Set<Song> countSongs = album.getSongs();
-            int countedSongs = countSongs.size();
-            album.setTracks(countedSongs);
+                AlbumSong albumSong = new AlbumSong();
+                albumSong.setAlbum(album);
+                albumSong.setSong(song);
+                albumSong.setTrackNumber(trackDto.getTrackNumber());
 
-            int totalLength = 0;
-            for (Song song : countSongs) {
-                int length = song.getLengthInSeconds();
-                totalLength = totalLength + (length);
+                newSongs.add(albumSong);
             }
+
+            album.setAlbumSongs(newSongs);
+
+            album.setTracks(newSongs.size());
+
+            int totalLength = newSongs.stream()
+                    .mapToInt(as -> as.getSong().getLengthInSeconds())
+                    .sum();
             album.setLengthInSeconds(totalLength);
-
-            albumRepository.save(album);
         }
+
+        albumRepository.save(album);
     }
 
     @Override

@@ -1,13 +1,16 @@
 package org.example.edufymusic.mapper;
 
 import org.example.edufymusic.model.dto.PostAlbumDto;
-import org.example.edufymusic.model.dto.SongDto;
+import org.example.edufymusic.model.dto.TrackDto;
 import org.example.edufymusic.model.entity.Album;
+import org.example.edufymusic.model.entity.AlbumSong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AlbumMapper {
@@ -23,10 +26,18 @@ public class AlbumMapper {
         dto.setId(album.getId());
         dto.setTitle(album.getTitle());
         dto.setArtistId(album.getArtist().getId());
-        dto.getSongId().forEach((songId) -> {
-            SongDto songDto = new SongDto();
-            songDto.setId(songId);
-        });
+
+        List<TrackDto> tracks = album.getAlbumSongs().stream()
+                .sorted(Comparator.comparing(AlbumSong::getTrackNumber))
+                .map(as -> {
+                    TrackDto trackDto = new TrackDto();
+                    trackDto.setSongId(as.getSong().getId());
+                    trackDto.setTrackNumber(as.getTrackNumber());
+                    return trackDto;
+                })
+                .collect(Collectors.toList());
+
+        dto.setTracks(tracks);
         return dto;
     }
 
